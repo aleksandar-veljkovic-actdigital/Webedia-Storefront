@@ -6,6 +6,7 @@
       <h3>{{item.code}}</h3>
       <h3>{{item.slug}}</h3>
       <h2>{{item.name}}</h2>
+      <button @click="cartAdd(item)">Cart Add</button>
       <small>{{item}}</small>
       <hr>
     </div>
@@ -24,6 +25,11 @@ export default {
     data.items = await store.dispatch('list/fetch');
     return data;
   },
+  methods: {
+    cartAdd (item) {
+      this.$store.dispatch('cart/addItem', item);
+    }
+  }
 }
 </script>
 

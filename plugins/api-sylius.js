@@ -4,8 +4,10 @@ import { ls } from './ls';
 
 const apiBase = axios.create({
   baseURL: process.env.API_URL_SYLIUS || 'http://192.168.15.70/shop-api',
+  // headers: {'Cookie': 'boban=stojan'},
+  withCredentials: true,
   httpsAgent: new https.Agent({
-    rejectUnauthorized: false
+    rejectUnauthorized: false,
   })
 });
 
