@@ -20,10 +20,10 @@ export const mutations = {
   },
 }
 
-const getCardId = async () => {
+const getCardId = async (store) => {
   let cartId = ls.get('cartId');
   if (!cartId) {
-    const cartIdResp = await this.dispatch('cart/postCarts')
+    const cartIdResp = await store.dispatch('cart/postCarts')
     cartId = cartIdResp.tokenValue;
     ls.set('cartId', cartId);
   }
@@ -36,13 +36,12 @@ export const actions = {
     return resp;
   },
   async getCarts () {
-    const cartId = await getCardId();
+    const cartId = await getCardId(this);
     const cartResp = await apiSylius.get(`/carts/${cartId}`)
     this.commit('cart/set', cartResp);
   },
   async addItem ({}, item) {
-    console.log(item)
-    const cartId = await getCardId();
+    const cartId = await getCardId(this);
     // @toDo 
     const payload = {
       "productCode": item.code,
@@ -54,7 +53,7 @@ export const actions = {
       //   "additionalProp3": "HAT_SIZE_S"
       // }
     }
-    const resp = await apiSylius.post(`/carts/${cartId}/items`, payload)
-    console.log('--- addItem ---', resp)
+    const cartResp = await apiSylius.post(`/carts/${cartId}/items`, payload)  
+    this.commit('cart/set', cartResp);
   }
 }
