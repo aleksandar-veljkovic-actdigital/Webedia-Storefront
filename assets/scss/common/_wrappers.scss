@@ -1,0 +1,12 @@
+.wrapper{
+	padding: 0 16px;
+	@include breakpoint(desktop){
+		padding: 0 46px;
+		max-width: $maxWidth;
+		margin: auto;
+	}
+}
+
+img{
+	max-width: 100%;
+}

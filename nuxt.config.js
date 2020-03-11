@@ -23,7 +23,13 @@ export default {
   ** Global CSS
   */
   css: [
+    './assets/scss/main.scss',
   ],
+  styleResources: {
+    scss: [
+      './assets/scss/resources.scss',
+    ]
+  },
   /*
   ** Plugins to load before mounting the App
   */
@@ -41,6 +47,7 @@ export default {
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
+    ['@nuxtjs/style-resources'],
   ],
   /*
   ** Axios module configuration
