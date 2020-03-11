@@ -12,6 +12,23 @@ export default ({}, inject) => {
       return model;
     },
 
+    msg: (text) => {
+      alert(text)
+    },
+
+    err: (text) => {
+      alert("Error: " + text)
+    },
+
+    catchHandler: (err) => {
+      if (err?.response?.data?.message) {
+        utils.err(err.response.data.message)
+      }
+      else {
+        throw(err)
+      }
+    },
+
   }
 
   inject('utils', utils);

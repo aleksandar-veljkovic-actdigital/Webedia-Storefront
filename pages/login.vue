@@ -1,7 +1,7 @@
 <template><div>
   <form action=""  @submit.prevent="submitted">
     <input ref="email" placeholder="email" />
-    <input ref="pass" placeholder="password" />
+    <input ref="password" placeholder="password" />
     <button>login</button>
   </form>
 
@@ -11,14 +11,17 @@
 import Logo from '~/components/Logo.vue'
 
 export default {
+
   methods: {
     submitted () {
-      const email = this.$refs.email.value;
-      const pass = this.$refs.pass.value;
-      
-      console.log(email, pass);
+      const loginPayload = {
+        email: this.$refs.email.value,
+        password: this.$refs.password.value,
+      }
+      this.$store.dispatch('users/login', loginPayload)
     }
   },
+
 }
 </script>
 
