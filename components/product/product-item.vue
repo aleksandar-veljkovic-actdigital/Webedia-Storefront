@@ -34,7 +34,7 @@ export default {
 		padding: 0 12px 20px 12px;
 		margin-bottom: 24px;
 		@include breakpoint(desktop){
-			width: calc(100% / 4 - 42px);
+			width: calc(100% / 4 - 18px);
 			margin-right: 24px;
 			&:nth-child(4n){
 				margin-right: 0;
@@ -49,13 +49,14 @@ export default {
 	}
 	.product-item--title{
 		text-transform: uppercase;
-		font-family: Josefin Sans;
+		font-family: $ff-main;
 		font-size: 14px;
 		font-weight: 600;
 		margin-bottom: 10px;
+		letter-spacing: 1px;
 	}
 	.product-item--price{
-		font-family: Josefin Sans;
+		font-family: $ff-main;
 		font-size: 14px;
 		margin-bottom: 10px;
 	}
