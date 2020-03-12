@@ -1,9 +1,12 @@
 <template>
-	<div class="filters">
+	<div class="filters" :class="{opened: isOpened}">
 		<div class="filters--top">
 			<div>
 				<p>Filtre Active</p>
-				<div class="filters--close">X</div>
+				<div 
+					class="filters--close"
+					@click="closeFilters"
+				>X</div>
 			</div>
 			<div>
 				<p>Nettoyants et demaquillants</p>
@@ -16,22 +19,34 @@
 			<h3 class="filter--block--title">Filtrer par categorie</h3>
 			<ul class="filter--block--list">
 				<li class="filter--block--item">
-					<input type="text" class="filter--block--input">
+					<label class="filter--block--checkbox">
+						<input type="checkbox" class="filter--block--input">
+	  					<span class="checkmark"></span>						
+					</label>
 					Nettoyants & Démaquillants
 					<div class="filter--block--number">12</div>
 				</li>
 				<li class="filter--block--item">
-					<input type="text" class="filter--block--input">
+					<label class="filter--block--checkbox">
+						<input type="checkbox" class="filter--block--input">
+	  					<span class="checkmark"></span>						
+					</label>
 					Soins de Jour
 					<div class="filter--block--number">12</div>
 				</li>
 				<li class="filter--block--item">
-					<input type="text" class="filter--block--input">
+					<label class="filter--block--checkbox">
+						<input type="checkbox" class="filter--block--input">
+	  					<span class="checkmark"></span>						
+					</label>
 					Soins de Nuit
 					<div class="filter--block--number">12</div>
 				</li>
 				<li class="filter--block--item">
-					<input type="text" class="filter--block--input">
+					<label class="filter--block--checkbox">
+						<input type="checkbox" class="filter--block--input">
+	  					<span class="checkmark"></span>						
+					</label>
 					Sérums
 					<div class="filter--block--number">12</div>
 				</li>
@@ -42,6 +57,12 @@
 
 <script>
 export default {
+	props: ['isOpened'],
+	methods: {
+		closeFilters(){
+			this.isOpened = false;
+		}
+	}
 }
 </script>
 
@@ -55,11 +76,18 @@ export default {
 	    background: $color-white;
 	    padding: 14px;
 	    max-width: 300px;
+	    transform: translateX(-400px);
+		transition: transform .2s linear;
+		&.opened{
+	    	transform: translateX(0);
+			transition: transform .2s linear;
+		}
 		@include breakpoint(desktop){
 			position: relative;
 			width: 328px;
 			padding-left: 24px;
 			max-width: 100%;
+	    	transform: translateX(0);
 		}
 	}
 	.filters--top{
@@ -112,12 +140,44 @@ export default {
 		color: $color-dove-gray;
 		margin-bottom: 19px;
 		display: flex;
+		position: relative;
+	}
+	.filter--block--checkbox{	
+		position: relative;
+		padding-left: 25px;
+		cursor: pointer;
+		-webkit-user-select: none;
+		-moz-user-select: none;
+		-ms-user-select: none;
+		user-select: none;
 	}
 	.filter--block--input{
+		position: absolute;
+		opacity: 0;
+		cursor: pointer;
+		height: 0;
+		width: 0;
+		&:checked ~ .checkmark:after {
+  			display: block;
+  		}
+	}
+	.checkmark {
+	    position: absolute;
+	    top: 0;
+	    left: 0;
 		border: 1px solid $color-dove-gray;
 		width: 15px;
 		height: 15px;
-		margin-right: 10px;
+		&:after{		
+		  content: "";
+		  position: absolute;	
+		  left: 2px;
+		  top: 2px;
+		  right: 2px;
+		  bottom: 2px;
+		  background: $color-dove-gray;
+		  display: none;
+		}
 	}
 	.filter--block--number{
 		font-family: $ff-times;

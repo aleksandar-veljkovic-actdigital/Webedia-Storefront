@@ -1,10 +1,20 @@
 <template>
   <div class="p-catalogue">
+
     <div class="b-hero" style="background: url(https://via.placeholder.com/150);">
       <h1 class="b-hero--title">Visage</h1>
     </div>
+
+    <div class="filters--trigger">
+      <button 
+        class="filters--trigger--item"
+        @click="openFilters"
+      >filtrer par</button>
+      <button class="filters--trigger--item">Trier par</button>
+    </div>
+
     <div class="products--wrapper wrapper">
-      <product-filters />
+      <product-filters :isOpened="filterOpened" />
       <div class="products--list">
         <product-item 
           v-for="(item, index) in items"
@@ -13,7 +23,8 @@
         >
         </product-item>
       </div>
-    </div>    
+    </div> 
+
   </div>
 </template>
 
@@ -21,6 +32,7 @@
 import Logo from '~/components/Logo.vue'
 import ProductItem from '~/components/product/product-item.vue'
 import ProductFilters from '~/components/product/filters.vue'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
@@ -32,6 +44,16 @@ export default {
     let data = {};
     data.items = await store.dispatch('list/fetch');
     return data;
+  },
+  methods: {
+    openFilters(){
+      // this.store.dispatch('filters/openFilters');
+    }
+  },
+  computed: {
+    filterOpened(){
+      return this.$store.state.filters.filterOpened;
+    }
   }
 }
 </script>
@@ -70,5 +92,15 @@ export default {
       width: calc(100% - 328px);
       padding-left: 55px;
     }
+  }
+  .filters--trigger{
+    display: flex;
+    justify-content: space-between;
+  }
+  .filters--trigger--item{
+    text-transform: uppercase;
+    font-size: 12px;
+    border: 1px solid $color-alto;
+    background: transparent;
   }
 </style>
