@@ -14,7 +14,7 @@
     </div>
 
     <div class="products--wrapper wrapper">
-      <product-filters :isOpened="filterOpened" />
+      <product-filters />
       <div class="products--list">
         <product-item 
           v-for="(item, index) in items"
@@ -47,14 +47,9 @@ export default {
   },
   methods: {
     openFilters(){
-      // this.store.dispatch('filters/openFilters');
+      this.$store.dispatch('filters/triggerFilters');
     }
   },
-  computed: {
-    filterOpened(){
-      return this.$store.state.filters.filterOpened;
-    }
-  }
 }
 </script>
 
@@ -96,11 +91,18 @@ export default {
   .filters--trigger{
     display: flex;
     justify-content: space-between;
+    padding: 0 16px;
+    margin-bottom: 20px;
+    @include breakpoint(desktop){
+      display: none;
+    }
   }
   .filters--trigger--item{
     text-transform: uppercase;
     font-size: 12px;
     border: 1px solid $color-alto;
     background: transparent;
+    width: 48%;
+    text-align: left;
   }
 </style>

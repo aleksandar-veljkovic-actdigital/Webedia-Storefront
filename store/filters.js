@@ -3,13 +3,13 @@ export const state = () => ({
 })
 
 export const mutations = {
-  openFilters(state){
-    this.filterOpened = true;
-  }
+  triggerFilters(state){
+    state.filterOpened = !state.filterOpened;
+  },
 }
 
 export const actions = {
-  openFilters(context){
-    context.commit(openFilters);
+  triggerFilters(context){
+    context.commit('triggerFilters');
   }
 }

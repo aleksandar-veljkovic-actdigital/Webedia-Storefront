@@ -1,5 +1,5 @@
 <template>
-	<div class="filters" :class="{opened: isOpened}">
+	<div class="filters" :class="{opened: filterOpened}">
 		<div class="filters--top">
 			<div>
 				<p>Filtre Active</p>
@@ -57,10 +57,14 @@
 
 <script>
 export default {
-	props: ['isOpened'],
 	methods: {
 		closeFilters(){
-			this.isOpened = false;
+        	this.$store.dispatch('filters/triggerFilters');
+		}
+	},
+	computed: {
+		filterOpened(){
+		  return this.$store.state.filters.filterOpened;
 		}
 	}
 }
