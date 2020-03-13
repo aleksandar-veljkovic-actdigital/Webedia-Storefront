@@ -37,10 +37,11 @@ export const actions = {
     //   "token": "SDAOSLEFNWU35H3QLI5325"
     // }
     try {
+      params.token = ls.get('cartId');
       const resp = await apiSylius.post('/login', params);
       ls.set('authToken', resp.token);
       dispatch('me');
-      this.dispatch('carts/getCarts');
+      this.dispatch('cart/getCarts');
     }
     catch (err) {
       this.$utils.catchHandler(err);
