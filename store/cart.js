@@ -71,7 +71,6 @@ export const component = {
     }
   },
   beforeMount() {
-    console.log(this.$store.getters['cart/quantity'])
     this.$store.dispatch("cart/getCarts");
   }
 }
