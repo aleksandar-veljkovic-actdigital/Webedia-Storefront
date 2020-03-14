@@ -57,3 +57,21 @@ export const actions = {
     this.commit('cart/set', cartResp);
   }
 }
+
+export const component = {
+  computed: {
+    cart () {
+      return this.$store.state.cart;
+    },
+    isItems () {
+      return this.$store.state.cart?.items?.[0];
+    },
+    quantity () {
+      return this.$store.state.cart?.items?.[0]?.quantity;
+    }
+  },
+  beforeMount() {
+    console.log(this.$store.getters['cart/quantity'])
+    this.$store.dispatch("cart/getCarts");
+  }
+}
