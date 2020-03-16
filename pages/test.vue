@@ -1,3 +1,13 @@
+<i18n>{
+en: 
+  'Hello world!': 'Hello world!'
+fr:
+  'Hello world!': 'Bonjour le monde!'
+}</i18n>
+
 <template><div>
-  <n-link to="/">home</n-link>
+
+  <h2>{{ $t('Hello world!') }}</h2>
+
+  <n-link :to='localePath("/")'>home</n-link>
 </div></template>

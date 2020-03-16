@@ -1,4 +1,9 @@
 
+import yaml from 'js-yaml'
+import fs from 'fs'
+
+console.log(yaml.load(fs.readFileSync('./assets/translations.yaml')))
+
 export default {
   mode: 'universal',
   /*
@@ -48,6 +53,21 @@ export default {
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
     ['@nuxtjs/style-resources'],
+    [
+      'nuxt-i18n',
+      {
+        locales: ['en', 'fr'],
+        defaultLocale: 'fr',
+        vueI18n: {
+          fallbackLocale: 'en',
+          detectBrowserLanguage: {
+            useCookie: true,
+            // alwaysRedirect: true
+          },
+          messages: yaml.load(fs.readFileSync('./assets/translations.yaml')),
+        }
+      }
+    ],
   ],
   /*
   ** Axios module configuration
