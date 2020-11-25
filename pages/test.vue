@@ -1,8 +1,10 @@
 <i18n>{
-en: 
-  'Hello world!': 'Hello world!'
-fr:
-  'Hello world!': 'Bonjour le monde!'
+"en": {
+  "Hello world!": "Hello world!"
+},
+"fr": {
+  "Hello world!": "Bonjour le monde!"
+}
 }</i18n>
 
 <template><div>

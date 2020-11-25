@@ -13,7 +13,7 @@ const authorisation = () => {
 }
 
 const apiBase = axios.create({
-  baseURL: process.env.API_URL_SYLIUS || 'http://192.168.15.70/shop-api',
+  baseURL: process.env.API_URL_SYLIUS || console.log('apibase', process.env.API_URL_SYLIUS, this) || 'http://192.168.15.70/shop-api',
   // headers: {'Cookie': 'boban=stojan'},
   withCredentials: true,
   httpsAgent: new https.Agent({

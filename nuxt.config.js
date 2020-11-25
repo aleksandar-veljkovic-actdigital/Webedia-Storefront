@@ -1,9 +1,3 @@
-
-import yaml from 'js-yaml'
-import fs from 'fs'
-
-console.log(yaml.load(fs.readFileSync('./assets/translations.yaml')))
-
 export default {
   mode: 'universal',
   /*
@@ -40,6 +34,7 @@ export default {
   */
   plugins: [
     '~/plugins/utils.js',
+    '~/plugins/channel-resolver.js',
   ],
   /*
   ** Nuxt.js dev-modules
@@ -57,17 +52,18 @@ export default {
       'nuxt-i18n',
       {
         locales: ['en', 'fr'],
-        defaultLocale: 'fr',
+        defaultLocale: 'en',
+        vueI18nLoader: true,
         vueI18n: {
           fallbackLocale: 'en',
           detectBrowserLanguage: {
             useCookie: true,
             // alwaysRedirect: true
           },
-          messages: yaml.load(fs.readFileSync('./assets/translations.yaml')),
         }
       }
     ],
+    ['@nuxtjs/dotenv', { filename: `./config/.env.${process.env.NODE_ENV}` } ],
   ],
   /*
   ** Axios module configuration
@@ -84,5 +80,8 @@ export default {
     */
     extend (config, ctx) {
     }
-  }
+  },
+  router: {
+    middleware: 'channel-resolver'
+  },
 }
