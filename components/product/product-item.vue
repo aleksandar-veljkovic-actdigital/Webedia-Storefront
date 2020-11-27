@@ -1,13 +1,13 @@
 <template>
 	<div class="product-item">
 		<div class="product-item--image">
-			<img :src="product.images[0].cachedPath" alt="">
+			<!-- <img :src="product.images[0].cachedPath" alt=""> -->
 		</div>
       	<h2 class="product-item--title">{{product.name}}</h2>
       	<div 
       		class="product-item--price"
       	>
-      		{{ getPrice(product.variants) }}$
+      		<!-- {{ getPrice(product.variants) }}$ -->
       	</div>
         <button class="c-button" @click="cartAdd(product)">Cart Add</button>
 	</div>

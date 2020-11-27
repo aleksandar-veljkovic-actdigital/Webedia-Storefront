@@ -5,16 +5,18 @@
       <h1 class="b-hero--title">Visage</h1>
     </div>
 
-    <div class="filters--trigger">
+    <!-- <div class="filters--trigger">
       <button 
         class="filters--trigger--item"
         @click="openFilters"
       >filtrer par</button>
       <button class="filters--trigger--item">Trier par</button>
-    </div>
+    </div> -->
 
     <div class="products--wrapper wrapper">
+      <!-- <pre>{{categories}}</pre> -->
       <product-filters />
+      <!-- --<pre>{{items}}</pre>-- -->
       <div class="products--list">
         <product-item 
           v-for="(item, index) in items"
@@ -42,7 +44,14 @@ export default {
   },
   async asyncData ({store}) {
     let data = {};
-    data.items = await store.dispatch('list/fetch');
+
+    const productSearch = await store.dispatch('product/list');
+    data.items = productSearch.hits.hits.map((hit)=>hit._source)
+
+    const categorySearch = await store.dispatch('category/list');
+    data.categories = categorySearch.hits.hits.map((hit)=>hit._source)
+
+
     return data;
   },
   methods: {
