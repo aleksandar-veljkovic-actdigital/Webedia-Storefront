@@ -1,3 +1,5 @@
+import {config, secrets} from './config'
+
 export default {
   mode: 'universal',
   /*
@@ -63,7 +65,7 @@ export default {
         }
       }
     ],
-    ['@nuxtjs/dotenv', { filename: `./config/.env.${process.env.NODE_ENV}` } ],
+    '@nuxtjs/proxy',
   ],
   /*
   ** Axios module configuration
@@ -83,5 +85,11 @@ export default {
   },
   router: {
     middleware: 'channel-resolver'
+  },
+  proxy: {
+    '/api/es/**': {
+      target: secrets.proxy.elasticsearch_api,
+      pathRewrite: {'^/api/es/': ''},
+    },
   },
 }

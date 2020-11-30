@@ -1,6 +1,7 @@
 import axios, { AxiosRequestConfig } from 'axios';
 import https from 'https'
 import { ls } from './ls';
+import {config} from '~/config'
 
 const authorisation = () => {
   const token = ls.get('authToken');
@@ -13,7 +14,7 @@ const authorisation = () => {
 }
 
 const apiBase = axios.create({
-  baseURL: process.env.API_URL_SYLIUS || console.log('apibase', process.env.API_URL_SYLIUS, this) || 'http://192.168.15.70/shop-api',
+  baseURL: config.sylius.api,
   // headers: {'Cookie': 'boban=stojan'},
   withCredentials: true,
   httpsAgent: new https.Agent({

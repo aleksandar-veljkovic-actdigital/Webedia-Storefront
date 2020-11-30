@@ -45,11 +45,12 @@ export default {
   async asyncData ({store}) {
     let data = {};
 
-    const productSearch = await store.dispatch('product/list');
-    data.items = productSearch.hits.hits.map((hit)=>hit._source)
+    // const productSearch = await store.dispatch('product/list');
+    // data.items = productSearch.hits.hits.map((hit)=>hit._source)
+    data.items = [];
 
     const categorySearch = await store.dispatch('category/list');
-    data.categories = categorySearch.hits.hits.map((hit)=>hit._source)
+    // data.categories = categorySearch.hits.hits.map((hit)=>hit._source)
 
 
     return data;

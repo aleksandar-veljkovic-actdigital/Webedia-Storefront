@@ -1,5 +1,5 @@
 <template>
-	<div class="filters" :class="{opened: filterOpened}">
+	<div class="c-filters" :class="{opened: filterOpened}">
 		<div class="filters--top">
 			<div>
 				<p>Filtre Active</p>
@@ -71,7 +71,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-	.filters{
+	.c-filters{
 	    position: fixed;
 	    top: 0;
 	    bottom: 0;

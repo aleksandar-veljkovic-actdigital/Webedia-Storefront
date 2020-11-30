@@ -1,7 +1,9 @@
 import axios, { AxiosRequestConfig } from 'axios';
+import {config} from '~/config'
 
 const apiBase = axios.create({
-  baseURL: process.env.ES_ENDPOINT,
+  baseURL: config.elasticsearch.api,
+  baseURL: "http://localhost:3000/api/es",
   headers: {'Content-Type': 'application/json'},
   // withCredentials: true,
   // httpsAgent: new https.Agent({
@@ -15,18 +17,19 @@ const apiEs = {
     // config.headers = {
     //   'Content-Type': 'application/json;charset=UTF-8',
     // }
-    const response = await apiBase.get(`/vue_storefront_catalog_${indexName}/_search`, config);
-    return response.data;
-  },
-
-  async post(url, data = {}, config = {}) {
-    config.headers = {
-      'Content-Type': 'application/json;charset=UTF-8',
+    try {
+      var response = await apiBase.get(`/vue_storefront_catalog_${indexName}/_search`, config);
     }
-    const response = await apiBase.post(url, data, config);
-    return response.data;
+    catch (err) {
+      console.error("ES Failed", {err})
+      var response = err.response
+    }
+    return {
+      response,
+      payload: response?.data?.hits,
+    };
   },
-
+  
 };
 
 export { apiEs };
