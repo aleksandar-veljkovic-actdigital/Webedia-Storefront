@@ -3,7 +3,6 @@ import {config} from '~/config'
 
 const apiBase = axios.create({
   baseURL: config.elasticsearch.api,
-  baseURL: "http://localhost:3000/api/es",
   // headers: {'Content-Type': 'application/json;charset=UTF-8'},
 });
 

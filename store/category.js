@@ -17,20 +17,17 @@ export const mutations = {
 export const actions = {
   async list ({commit}) {
 
-    var rq = await apiEs.search('category')
+    var {request, response} = await apiEs.search('category')
 
-    console.log('xxxxxxxxx rq', rq)
+    // console.log('xxxxxxxxx rq', response)
 
-
-    if (rq?.hits?.hits) {
-      var allCategories = rq.hits.hits;
+    if (response?.hits?.hits) {
+      var allCategories = response.hits.hits;
     }
-
-    
 
     commit('SET_ALL', allCategories)
 
-    const items = rq;
+    const items = response;
     return items;
   },
 }

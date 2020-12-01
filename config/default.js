@@ -1,9 +1,13 @@
 export const config = {
+  "server": {
+    "port": 3003,
+    "host": '0.0.0.0'
+  },
   "sylius": {
     "api": "http://plab.en/shop-api"
   },
   "elasticsearch": {
-    "api": "http://localhost:3000/api/es"
+    "api": "http://0.0.0.0:3003/api/es"
   }
 }
 

@@ -1,7 +1,10 @@
 import {config, secrets} from './config'
 
 export default {
-  mode: 'universal',
+  server: {
+    port: config.server.port,
+    host: config.server.host,
+  },
   /*
   ** Headers of the page
   */
@@ -87,9 +90,14 @@ export default {
     middleware: 'channel-resolver'
   },
   proxy: {
-    '/api/es/**': {
-      target: secrets.proxy.elasticsearch_api,
-      pathRewrite: {'^/api/es/': ''},
-    },
+    ...( secrets.proxy && secrets.proxy.elasticsearch_api && {
+      '/api/es/**': {
+        target: secrets.proxy.elasticsearch_api,
+        pathRewrite: {'^/api/es/': ''},
+        onProxyRes: function (proxyRes, req, res) {
+          proxyRes.headers['Access-Control-Allow-Origin'] = '*';
+        }
+      }
+    } || {}),
   },
 }
