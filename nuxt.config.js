@@ -1,9 +1,9 @@
-import {config, secrets} from './config'
+import {config as publicRuntimeConfig, secrets as privateRuntimeConfig} from './config'
 
 export default {
   server: {
-    port: config.server.port,
-    host: config.server.host,
+    port: publicRuntimeConfig.server.port,
+    host: publicRuntimeConfig.server.host,
   },
   /*
   ** Headers of the page
@@ -90,9 +90,9 @@ export default {
     middleware: 'channel-resolver'
   },
   proxy: {
-    ...( secrets.proxy && secrets.proxy.elasticsearch_api && {
+    ...( privateRuntimeConfig.proxy && privateRuntimeConfig.proxy.elasticsearch_api && {
       '/api/es/**': {
-        target: secrets.proxy.elasticsearch_api,
+        target: privateRuntimeConfig.proxy.elasticsearch_api,
         pathRewrite: {'^/api/es/': ''},
         onProxyRes: function (proxyRes, req, res) {
           proxyRes.headers['Access-Control-Allow-Origin'] = '*';
@@ -100,4 +100,6 @@ export default {
       }
     } || {}),
   },
+  publicRuntimeConfig: publicRuntimeConfig,
+  privateRuntimeConfig: privateRuntimeConfig,
 }
