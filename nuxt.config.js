@@ -86,9 +86,6 @@ export default {
     extend (config, ctx) {
     }
   },
-  router: {
-    middleware: 'channel-resolver'
-  },
   proxy: {
     ...( privateRuntimeConfig.proxy && privateRuntimeConfig.proxy.elasticsearch_api && {
       '/api/es/**': {

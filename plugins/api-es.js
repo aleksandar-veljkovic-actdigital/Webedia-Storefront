@@ -22,6 +22,7 @@ const apiEs = {
     return {
       request,
       response: request?.data,
+      payload: request?.data?.hits?.hits?.map((hit)=>hit._source) || [],
     };
   },
   

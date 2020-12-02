@@ -14,15 +14,15 @@
     </div> -->
 
     <div class="products--wrapper wrapper">
-      <!-- <pre>{{categories}}</pre> -->
-      <product-filters />
-      <!-- --<pre>{{items}}</pre>-- -->
+      <div>
+        <pre style="width: 300px; height: 300px; overflow:scroll">{{$store.state.category.tree}}</pre>
+        <product-filters />
+      </div>
       <div class="products--list">
         <product-item 
-          v-for="(item, index) in items"
+          v-for="(product, index) in products"
           :key="`sh-list-item-${index}`"
-          :product="item"
-        >
+          :product="product">
         </product-item>
       </div>
     </div> 
@@ -44,15 +44,8 @@ export default {
   },
   async asyncData ({store}) {
     let data = {};
-
-    // const productSearch = await store.dispatch('product/list');
-    // data.items = productSearch.hits.hits.map((hit)=>hit._source)
-    data.items = [];
-
-    const categorySearch = await store.dispatch('category/list');
-    // data.categories = categorySearch.hits.hits.map((hit)=>hit._source)
-
-
+    const {payload: products} = await store.dispatch('product/list');
+    data.products = products;
     return data;
   },
   methods: {
