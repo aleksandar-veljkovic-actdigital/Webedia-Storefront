@@ -10,21 +10,19 @@ export const mutations = {
     state.all = allCategories;
   },
   SET_TREE (state, allCategories) {
-    const families = allCategories.map( category => {
+    const _allCategories = JSON.parse(JSON.stringify(allCategories))
+    const families = _allCategories.map( category => {
       category.children_data = category.children_data.map( child => {
-        return allCategories.find( mabyChild => mabyChild.id === child.id )
+        return _allCategories.find( mabyChild => mabyChild.id === child.id )
       });
       return category;
     });
-    const rootTree = allCategories.filter( category => category.level == 3);
+    const rootTree = _allCategories.filter( category => !category.parent_id);
     state.tree = rootTree;
   },
 }
 
 export const actions = {
-  async fetch({ dispatch }) {
-    console.log('xxxxxxxxx category nuxtServerInit')
-  },
   async sync ({commit}) {
     let esQuery = {
       "query": {

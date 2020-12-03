@@ -29,6 +29,17 @@ export default ({}, inject) => {
       }
     },
 
+    optionalChaining (obj, path) {
+      let value = undefined
+      try {
+        value = eval('obj' + path)
+      }
+      catch (e) {
+        value = undefined;
+      }
+      return value;
+    },
+
   }
 
   inject('utils', utils);
