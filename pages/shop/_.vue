@@ -46,20 +46,118 @@ export default {
     ProductFilters,
     Categories,
   },
-  mounted () {
-    console.log('xxxxxxxxx', this.$route.params)
-  },
-  async asyncData ({store}) {
+
+  async asyncData ({store, route}) {
     let data = {};
-    const {payload: products} = await store.dispatch('product/list');
+    const path = route.path.replace(/^\//, "").replace(/\/$/, "")
+    const slug = [...path.split("/")]?.pop();
+    const id = parseInt(slug) || 6 //@toDo <---- root category 
+    // console.log('xxxxxxxxx path...', {path, slug, id})
+    const esQuery = {
+      size: 12,
+      sort: [{updated_at: {order: "desc"}}],
+      "query": {
+        "bool": {
+          "filter": {
+            "bool": {
+              "must": [
+                {"terms": {visibility: [2, 3, 4]}},
+                {"terms": {status: [0,1]}},
+                {terms: {category_ids: [id]}},
+                // {match: {"category.path": ...}},
+                // {
+                //   "query_string": {
+                //     "default_field": "category.path",
+                //     "query": '"shop/corps/bain&douche"'
+                //   }
+                // }
+              ]
+            }
+          }
+        },
+      },
+      aggs: {
+        agg_terms_price: {terms: {field: "price"}},
+        agg_range_price: {
+          range: {
+            field: "price",
+            ranges: [
+              {from: 0, to: 0},
+              {from: 0, to: 500},
+              {from: 0, to: 1000},
+              {from: 0, to: 1500},
+              {from: 0, to: 2000},
+              {from: 0, to: 2500},
+              {from: 0, to: 3000},
+              {from: 0, to: 3500},
+              {from: 0, to: 4000},
+              {from: 500, to: 500},
+              {from: 500, to: 1000},
+              {from: 500, to: 1500},
+              {from: 500, to: 2000},
+              {from: 500, to: 2500},
+              {from: 500, to: 3000},
+              {from: 500, to: 3500},
+              {from: 500, to: 4000},
+              {from: 1000, to: 1000},
+              {from: 1000, to: 150},
+              {from: 1000, to: 200},
+              {from: 1000, to: 250},
+              {from: 1000, to: 300},
+              {from: 1000, to: 350},
+              {from: 1000, to: 400},
+              {from: 1500, to: 150},
+              {from: 1500, to: 200},
+              {from: 1500, to: 250},
+              {from: 1500, to: 300},
+              {from: 1500, to: 350},
+              {from: 1500, to: 400},
+              {from: 2000, to: 200},
+              {from: 2000, to: 250},
+              {from: 2000, to: 300},
+              {from: 2000, to: 350},
+              {from: 2000, to: 400},
+              {from: 2500, to: 250},
+              {from: 2500, to: 300},
+              {from: 2500, to: 350},
+              {from: 2500, to: 400},
+              {from: 3000, to: 300},
+              {from: 3000, to: 350},
+              {from: 3000, to: 400},
+              {from: 3500, to: 350},
+              {from: 3500, to: 400},
+              {from: 4000, to: 4000
+              }
+            ]
+          }
+        },
+        agg_terms_average_rating_filter: {terms: {field: "average_rating_filter", size: 10}},
+        agg_terms_average_rating_filter_options: {terms: {field: "average_rating_filter_options", size: 10}},
+        agg_terms_concerns: {terms: {field: "concerns", size: 10}},
+        agg_terms_concerns_options: {terms: {field: "concerns_options", size: 10}},
+        agg_terms_skin_type: {terms: {field: "skin_type", size: 10}},
+        agg_terms_skin_type_options: {terms: {field: "skin_type_options", size: 10}},
+        agg_terms_texture: {terms: {field: "texture", size: 10}},
+        agg_terms_texture_options: {terms: {field: "texture_options", size: 10}}
+      }
+    }
+
+    const {payload: products} = await store.dispatch('product/list', {
+      params: {
+        source: JSON.stringify(esQuery),
+        source_content_type: 'application/json',
+      }
+    });
     data.products = products;
     return data;
   },
+
   methods: {
     openFilters(){
       this.$store.dispatch('filters/triggerFilters');
     }
   },
+  
 }
 </script>
 

@@ -7,6 +7,7 @@
       :to="'/' + category.url_path">
         {{ category.name }}
       </n-link>
+      <DebugData :variable="category"/>
       <categories
       v-if="$utils.optionalChaining(category, '.children_data[0]')"
       :categories="category.children_data"/>
@@ -15,8 +16,13 @@
 </template>
 
 <script>
+  import DebugData from '~/components/debug-data.vue'
+
   export default {
     name: 'categories',
+    components: {
+      DebugData
+    },
     props: [
       'categories'
     ],

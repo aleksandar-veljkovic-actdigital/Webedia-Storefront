@@ -8,7 +8,7 @@ const apiBase = axios.create({
 
 const apiEs = {
 
-  async search(indexName, config = { params: {} }) {
+  async search(indexName, config) {
     // config.headers = {
     //   'Content-Type': 'application/json;charset=UTF-8',
     // }

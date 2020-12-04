@@ -1,7 +1,7 @@
 import { apiEs } from '~/plugins/api-es'
 
 export const actions = {
-  async list() {
+  async list({}, config) {
     let esQuery = {
       "query": {
         "bool": {
@@ -19,12 +19,7 @@ export const actions = {
       "sort": [],
       "aggs": {}
     }
-    const rq = await apiEs.search('product', {
-      params: {
-        source: JSON.stringify(esQuery),
-        source_content_type: 'application/json'
-      }
-    })
+    const rq = await apiEs.search('product', config)
     const items = rq;
     return items;
   },
