@@ -2,23 +2,11 @@ import {apiEs} from '~/plugins/api-es'
 
 export const state = () => ({
   all: [],
-  tree: [],
 });
 
 export const mutations = {
-  SET_ALL (state, allCategories) {
-    state.all = allCategories;
-  },
-  SET_TREE (state, allCategories) {
-    const _allCategories = JSON.parse(JSON.stringify(allCategories))
-    const families = _allCategories.map( category => {
-      category.children_data = category.children_data.map( child => {
-        return _allCategories.find( mabyChild => mabyChild.id === child.id )
-      });
-      return category;
-    });
-    const rootTree = _allCategories.filter( category => !category.parent_id);
-    state.tree = rootTree;
+  SET_ALL (state, allAttributes) {
+    state.all = allAttributes;
   },
 }
 
@@ -41,7 +29,7 @@ export const actions = {
       "sort": [],
       "aggs": {}
     }
-    var {request, response, result} = await apiEs.search('category', {
+    var {request, response, result} = await apiEs.search('attribute', {
       params: {
         source: JSON.stringify(esQuery),
         source_content_type: 'application/json'

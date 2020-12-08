@@ -1,5 +1,6 @@
 <template><span 
-  class="debug-data c--debug-data" 
+  class="debug-data c--debug-data"
+  style="display: none;"
   v-html="'<!--' + JSON.stringify(variable, null, 2) + '-->'"/></template>
 
 <script>
