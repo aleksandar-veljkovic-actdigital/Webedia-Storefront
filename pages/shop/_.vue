@@ -8,7 +8,10 @@
     <div class="middle">
       <section class="aside">
         <Categories :categories="$store.state.category.tree"/>
-        <CatalogFilterCheckbox code="concerns" :aggregations="productAggregations.agg_terms_concerns"/>
+        <CatalogFilterCheckbox 
+        code="concerns" 
+        :aggregations="productAggregations.agg_terms_concerns"
+        @changed="modifyFilters('concerns', $event)"/>
       </section>
       <section class="main">
         <article
@@ -39,106 +42,21 @@ export default {
     Categories,
   },
 
+  data () { return {
+    selectedFilters: {},
+  }},
+
   async asyncData ({store, route}) {
     const path = route.path.replace(/^\//, "").replace(/\/$/, "")
     const categorySlug = [...path.split("/")]?.pop();
     const categoryId = parseInt(categorySlug) || 6 // @toDo <---- root category *1--multitilateral
     const category = store.state.category.all.find(category => category.id == categoryId)
-    const esQuery = {
-      size: 12,
-      sort: [{updated_at: {order: "desc"}}],
-      "query": {
-        "bool": {
-          "filter": {
-            "bool": {
-              "must": [
-                {"terms": {visibility: [2, 3, 4]}},
-                {"terms": {status: [0,1]}},
-                {terms: {category_ids: [categoryId]}},
-                // @ option :: if ES category/product match will be fixed, custom paths from Sylius are posible *1--multitilateral
-                // {match: {"category.path": ...}},
-                // {
-                //   "query_string": {
-                //     "default_field": "category.path",
-                //     "query": '"shop/corps/bain&douche"'
-                //   }
-                // }
-              ]
-            }
-          }
-        },
-      },
-      aggs: {
-        agg_terms_price: {terms: {field: "price"}},
-        agg_range_price: {
-          range: {
-            field: "price",
-            ranges: [
-              {from: 0, to: 0},
-              {from: 0, to: 500},
-              {from: 0, to: 1000},
-              {from: 0, to: 1500},
-              {from: 0, to: 2000},
-              {from: 0, to: 2500},
-              {from: 0, to: 3000},
-              {from: 0, to: 3500},
-              {from: 0, to: 4000},
-              {from: 500, to: 500},
-              {from: 500, to: 1000},
-              {from: 500, to: 1500},
-              {from: 500, to: 2000},
-              {from: 500, to: 2500},
-              {from: 500, to: 3000},
-              {from: 500, to: 3500},
-              {from: 500, to: 4000},
-              {from: 1000, to: 1000},
-              {from: 1000, to: 150},
-              {from: 1000, to: 200},
-              {from: 1000, to: 250},
-              {from: 1000, to: 300},
-              {from: 1000, to: 350},
-              {from: 1000, to: 400},
-              {from: 1500, to: 150},
-              {from: 1500, to: 200},
-              {from: 1500, to: 250},
-              {from: 1500, to: 300},
-              {from: 1500, to: 350},
-              {from: 1500, to: 400},
-              {from: 2000, to: 200},
-              {from: 2000, to: 250},
-              {from: 2000, to: 300},
-              {from: 2000, to: 350},
-              {from: 2000, to: 400},
-              {from: 2500, to: 250},
-              {from: 2500, to: 300},
-              {from: 2500, to: 350},
-              {from: 2500, to: 400},
-              {from: 3000, to: 300},
-              {from: 3000, to: 350},
-              {from: 3000, to: 400},
-              {from: 3500, to: 350},
-              {from: 3500, to: 400},
-              {from: 4000, to: 4000
-              }
-            ]
-          }
-        },
-        agg_terms_average_rating_filter: {terms: {field: "average_rating_filter", size: 10}},
-        agg_terms_average_rating_filter_options: {terms: {field: "average_rating_filter_options", size: 10}},
-        agg_terms_concerns: {terms: {field: "concerns", size: 10}},
-        agg_terms_concerns_options: {terms: {field: "concerns_options", size: 10}},
-        agg_terms_skin_type: {terms: {field: "skin_type", size: 10}},
-        agg_terms_skin_type_options: {terms: {field: "skin_type_options", size: 10}},
-        agg_terms_texture: {terms: {field: "texture", size: 10}},
-        agg_terms_texture_options: {terms: {field: "texture_options", size: 10}}
-      }
-    }
-    const {result: products, aggregations: producAaggregations} = await store.dispatch('product/list', {
-      params: {
-        source: JSON.stringify(esQuery),
-        source_content_type: 'application/json',
-      }
+
+    const {result: products, aggregations: producAaggregations} = await fetchProducts({
+      store,
+      category_ids: [categoryId],
     });
+
     ///////// PAGE DATA /////////
     let data = {};
     data.products = products;
@@ -146,7 +64,147 @@ export default {
     data.category = category;
     return data;
   },
+
+  methods: {
+    async modifyFilters (name, ids) {
+      if (ids.length > 0) {
+        this.selectedFilters[name] = ids;
+      }
+      else {
+        delete this.selectedFilters[name];
+      }
+
+      ({result: this.products, aggregations: this.producAaggregations} = await fetchProducts({
+        store: this.$store,
+        category_ids: [this.category.id],
+        selectedFilters: this.selectedFilters,
+      }));
+
+    }
+
+  },
   
+}
+
+const fetchProducts = async ({store, category_ids = [], selectedFilters = {}}) => {
+  const esQuery = {
+    size: 12,
+    sort: [{updated_at: {order: "desc"}}],
+    "query": {
+      "bool": {
+        "filter": {
+          "bool": {
+            "must": [
+              {"terms": {visibility: [2, 3, 4]}},
+              {"terms": {status: [0,1]}},
+              {terms: {category_ids}},
+              // @ option :: if ES category/product match will be fixed, custom paths from Sylius are posible *1--multitilateral
+              // {match: {"category.path": ...}},
+              // {
+              //   "query_string": {
+              //     "default_field": "category.path",
+              //     "query": '"shop/corps/bain&douche"'
+              //   }
+              // }
+            ],
+            ...(() => {
+              if (Object.keys(selectedFilters).length < 1) {
+                return {};
+              }
+              let esQueryFilterShould = [
+                {"bool": 
+                  {"filter": {"terms": {   }}}
+                },
+                {"bool": 
+                  {"must": [{"terms": {   }},
+                  {"match": {"type_id": "configurable"}}]}
+                }
+              ];
+              for (const productFieldName in selectedFilters) {
+                const selectedOptions = selectedFilters[productFieldName]
+                esQueryFilterShould[0].bool.filter.terms[productFieldName] = selectedOptions
+                esQueryFilterShould[1].bool.must[0].terms[productFieldName + "_options"] = selectedOptions;
+              }
+              return {
+                "should": esQueryFilterShould,
+                "minimum_should_match": 1
+              }
+            })()
+          }
+        }
+      },
+    },
+    aggs: {
+      agg_terms_price: {terms: {field: "price"}},
+      agg_range_price: {
+        range: {
+          field: "price",
+          ranges: [
+            {from: 0, to: 0},
+            {from: 0, to: 500},
+            {from: 0, to: 1000},
+            {from: 0, to: 1500},
+            {from: 0, to: 2000},
+            {from: 0, to: 2500},
+            {from: 0, to: 3000},
+            {from: 0, to: 3500},
+            {from: 0, to: 4000},
+            {from: 500, to: 500},
+            {from: 500, to: 1000},
+            {from: 500, to: 1500},
+            {from: 500, to: 2000},
+            {from: 500, to: 2500},
+            {from: 500, to: 3000},
+            {from: 500, to: 3500},
+            {from: 500, to: 4000},
+            {from: 1000, to: 1000},
+            {from: 1000, to: 150},
+            {from: 1000, to: 200},
+            {from: 1000, to: 250},
+            {from: 1000, to: 300},
+            {from: 1000, to: 350},
+            {from: 1000, to: 400},
+            {from: 1500, to: 150},
+            {from: 1500, to: 200},
+            {from: 1500, to: 250},
+            {from: 1500, to: 300},
+            {from: 1500, to: 350},
+            {from: 1500, to: 400},
+            {from: 2000, to: 200},
+            {from: 2000, to: 250},
+            {from: 2000, to: 300},
+            {from: 2000, to: 350},
+            {from: 2000, to: 400},
+            {from: 2500, to: 250},
+            {from: 2500, to: 300},
+            {from: 2500, to: 350},
+            {from: 2500, to: 400},
+            {from: 3000, to: 300},
+            {from: 3000, to: 350},
+            {from: 3000, to: 400},
+            {from: 3500, to: 350},
+            {from: 3500, to: 400},
+            {from: 4000, to: 4000
+            }
+          ]
+        }
+      },
+      agg_terms_average_rating_filter: {terms: {field: "average_rating_filter", size: 10}},
+      agg_terms_average_rating_filter_options: {terms: {field: "average_rating_filter_options", size: 10}},
+      agg_terms_concerns: {terms: {field: "concerns", size: 10}},
+      agg_terms_concerns_options: {terms: {field: "concerns_options", size: 10}},
+      agg_terms_skin_type: {terms: {field: "skin_type", size: 10}},
+      agg_terms_skin_type_options: {terms: {field: "skin_type_options", size: 10}},
+      agg_terms_texture: {terms: {field: "texture", size: 10}},
+      agg_terms_texture_options: {terms: {field: "texture_options", size: 10}}
+    }
+  }
+  return await store.dispatch('product/list', {
+    params: {
+      source: JSON.stringify(esQuery),
+      source_content_type: 'application/json',
+    }
+  });
 }
 </script>
 

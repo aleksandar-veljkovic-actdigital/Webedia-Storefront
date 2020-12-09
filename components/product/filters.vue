@@ -8,8 +8,8 @@
 		class="attribute-option">
 			<label>
 				<input 
-				type="checkbox">
-
+				type="checkbox"
+				@change="checkboxChanged(option.value, $event.srcElement.checked)">
 				{{option.label}}
 			</label>
 			<span>{{option.doc_count}}</span>
@@ -31,18 +31,31 @@ export default {
 		'code',
 		'aggregations'
 	],
-	computed: {
-		options () {
-			const optionsFromAttributes =  this.$store.state.attribute.all?.find(attribut => attribut.attribute_code === this.code)?.options || []
-			const options = optionsFromAttributes.filter(option => {
+	data () { return {
+		options: (() => {
+			const optionsFromAttributes =  JSON.parse(JSON.stringify( this.$store.state.attribute.all )).find(attribut => attribut.attribute_code === this.code)?.options || [];
+			const optionsWithProducts = optionsFromAttributes.filter(option => {
 				const bucket =  this.aggregations.buckets.find(bucketCandidate => bucketCandidate.key === option.value)
 				if (bucket?.doc_count) {
 					option.doc_count = bucket.doc_count;
+					option.selected = false;
 					return true
 				}
 				else return false;
 			})
-			return options;
+			return optionsWithProducts;
+		})(),
+	} },
+	methods: {
+		emitSelectedChexboxes () {
+			const selectedOptions = this.options.filter(optionCandidate => optionCandidate.selected === true)
+			const selectedOptionIds = Object.values(selectedOptions.map(option => option.value))
+			this.$emit('changed', selectedOptionIds)
+		},
+		checkboxChanged (optionId, selected) {
+			const selectedOption = this.options.find(optionCandidate => optionCandidate.value === optionId)
+			selectedOption.selected = selected;
+			this.emitSelectedChexboxes();
 		}
 	}
 
