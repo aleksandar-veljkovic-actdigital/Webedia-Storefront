@@ -3,6 +3,16 @@
 
     <div class="top">
       <h1>{{category.name}}</h1>
+      <div class="drops">
+        <select>
+          <option>a</option>
+          <option>b</option>
+        </select>
+        <select>
+          <option>c</option>
+          <option>d</option>
+        </select>
+      </div>
     </div>
 
     <div class="middle">
@@ -10,13 +20,10 @@
         <Categories :categories="$store.state.category.tree"/>
         <h2>Filter by Concern</h2>
         <CatalogFilterCheckbox  code="concerns" :aggregations="productAggregations.agg_terms_concerns" @changed="modifyFilters('concerns', $event)"/>
-
         <h2>Filter by Skin Type</h2>
         <CatalogFilterCheckbox  code="skin_type" :aggregations="productAggregations.agg_terms_skin_type" @changed="modifyFilters('skin_type', $event)"/>
-
         <h2>Filter by Texture</h2>
         <CatalogFilterCheckbox  code="texture" :aggregations="productAggregations.agg_terms_texture" @changed="modifyFilters('texture', $event)"/>
-
       </section>
       <section class="main">
         <article
@@ -56,12 +63,10 @@ export default {
     const categorySlug = [...path.split("/")]?.pop();
     const categoryId = parseInt(categorySlug) || 6 // @toDo <---- root category *1--multitilateral
     const category = store.state.category.all.find(category => category.id == categoryId)
-
     const {result: products, aggregations: producAaggregations} = await fetchProducts({
       store,
       category_ids: [categoryId],
     });
-
     ///////// PAGE DATA /////////
     let data = {};
     data.products = products;
@@ -71,6 +76,7 @@ export default {
   },
 
   methods: {
+
     async modifyFilters (name, ids) {
       if (ids.length > 0) {
         this.selectedFilters[name] = ids;
@@ -78,17 +84,15 @@ export default {
       else {
         delete this.selectedFilters[name];
       }
-
       ({result: this.products, aggregations: this.productAggregations} = await fetchProducts({
         store: this.$store,
         category_ids: [this.category.id],
         selectedFilters: this.selectedFilters,
       }));
-
     }
 
   },
-  
+
 }
 
 const fetchProducts = async ({store, category_ids = [], selectedFilters = {}}) => {
@@ -103,38 +107,35 @@ const fetchProducts = async ({store, category_ids = [], selectedFilters = {}}) =
               {"terms": {visibility: [2, 3, 4]}},
               {"terms": {status: [0,1]}},
               {terms: {category_ids}},
-              // @ option :: if ES category/product match will be fixed, custom paths from Sylius are posible *1--multitilateral
-              // {match: {"category.path": ...}},
-              // {
-              //   "query_string": {
-              //     "default_field": "category.path",
-              //     "query": '"shop/corps/bain&douche"'
-              //   }
-              // }
             ],
-            ...(() => {
-              if (Object.keys(selectedFilters).length < 1) {
-                return {};
-              }
-              let esQueryFilterShould = [
-                {"bool": 
-                  {"filter": {"terms": {   }}}
-                },
-                {"bool": 
-                  {"must": [{"terms": {   }},
-                  {"match": {"type_id": "configurable"}}]}
+            "should": [
+              {
+                "bool": {
+                  "must": Object.keys(selectedFilters).map(filterName => { return {
+                    "terms": {
+                      [filterName]: selectedFilters[filterName]
+                    }
+                  }})
                 }
-              ];
-              for (const productFieldName in selectedFilters) {
-                const selectedOptions = selectedFilters[productFieldName]
-                esQueryFilterShould[0].bool.filter.terms[productFieldName] = selectedOptions
-                esQueryFilterShould[1].bool.must[0].terms[productFieldName + "_options"] = selectedOptions;
+              },
+              {
+                "bool": {
+                  "must": [
+                    ...Object.keys(selectedFilters).map(filterName => { return {
+                      "terms": {
+                        [filterName + "_options"]: selectedFilters[filterName]
+                      },
+                    }}),
+                  {
+                    "match": {
+                        "type_id": "configurable"
+                      }
+                    }
+                  ]
+                }
               }
-              return {
-                "should": esQueryFilterShould,
-                "minimum_should_match": 1
-              }
-            })()
+            ],
+            ...() => (Object.keys(selectedFilters).length < 1) ? {"minimum_should_match": 1} : {},
           }
         }
       },
@@ -144,54 +145,7 @@ const fetchProducts = async ({store, category_ids = [], selectedFilters = {}}) =
       agg_range_price: {
         range: {
           field: "price",
-          ranges: [
-            {from: 0, to: 0},
-            {from: 0, to: 500},
-            {from: 0, to: 1000},
-            {from: 0, to: 1500},
-            {from: 0, to: 2000},
-            {from: 0, to: 2500},
-            {from: 0, to: 3000},
-            {from: 0, to: 3500},
-            {from: 0, to: 4000},
-            {from: 500, to: 500},
-            {from: 500, to: 1000},
-            {from: 500, to: 1500},
-            {from: 500, to: 2000},
-            {from: 500, to: 2500},
-            {from: 500, to: 3000},
-            {from: 500, to: 3500},
-            {from: 500, to: 4000},
-            {from: 1000, to: 1000},
-            {from: 1000, to: 150},
-            {from: 1000, to: 200},
-            {from: 1000, to: 250},
-            {from: 1000, to: 300},
-            {from: 1000, to: 350},
-            {from: 1000, to: 400},
-            {from: 1500, to: 150},
-            {from: 1500, to: 200},
-            {from: 1500, to: 250},
-            {from: 1500, to: 300},
-            {from: 1500, to: 350},
-            {from: 1500, to: 400},
-            {from: 2000, to: 200},
-            {from: 2000, to: 250},
-            {from: 2000, to: 300},
-            {from: 2000, to: 350},
-            {from: 2000, to: 400},
-            {from: 2500, to: 250},
-            {from: 2500, to: 300},
-            {from: 2500, to: 350},
-            {from: 2500, to: 400},
-            {from: 3000, to: 300},
-            {from: 3000, to: 350},
-            {from: 3000, to: 400},
-            {from: 3500, to: 350},
-            {from: 3500, to: 400},
-            {from: 4000, to: 4000
-            }
-          ]
+          ranges: [{from: 0, to: 0}, {from: 0, to: 500}, {from: 0, to: 1000}, {from: 0, to: 1500}, {from: 0, to: 2000}, {from: 0, to: 2500}, {from: 0, to: 3000}, {from: 0, to: 3500}, {from: 0, to: 4000}, {from: 500, to: 500}, {from: 500, to: 1000}, {from: 500, to: 1500}, {from: 500, to: 2000}, {from: 500, to: 2500}, {from: 500, to: 3000}, {from: 500, to: 3500}, {from: 500, to: 4000}, {from: 1000, to: 1000}, {from: 1000, to: 150}, {from: 1000, to: 200}, {from: 1000, to: 250}, {from: 1000, to: 300}, {from: 1000, to: 350}, {from: 1000, to: 400}, {from: 1500, to: 150}, {from: 1500, to: 200}, {from: 1500, to: 250}, {from: 1500, to: 300}, {from: 1500, to: 350}, {from: 1500, to: 400}, {from: 2000, to: 200}, {from: 2000, to: 250}, {from: 2000, to: 300}, {from: 2000, to: 350}, {from: 2000, to: 400}, {from: 2500, to: 250}, {from: 2500, to: 300}, {from: 2500, to: 350}, {from: 2500, to: 400}, {from: 3000, to: 300}, {from: 3000, to: 350}, {from: 3000, to: 400}, {from: 3500, to: 350}, {from: 3500, to: 400}, {from: 4000, to: 4000}],
         }
       },
       agg_terms_average_rating_filter: {terms: {field: "average_rating_filter", size: 10}},
