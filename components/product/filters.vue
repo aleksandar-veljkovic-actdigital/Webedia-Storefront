@@ -32,7 +32,6 @@ export default {
 		'aggregations'
 	],
 	computed: {
-		// attribuesAll
 		options () {
 			const optionsFromAttributes =  JSON.parse(JSON.stringify( this.$store.state.attribute.all )).find(attribut => attribut.attribute_code === this.code)?.options || [];
 			const optionsWithProducts = optionsFromAttributes.filter(option => {
