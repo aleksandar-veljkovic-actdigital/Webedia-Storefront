@@ -31,8 +31,9 @@ export default {
 		'code',
 		'aggregations'
 	],
-	data () { return {
-		options: (() => {
+	computed: {
+		// attribuesAll
+		options () {
 			const optionsFromAttributes =  JSON.parse(JSON.stringify( this.$store.state.attribute.all )).find(attribut => attribut.attribute_code === this.code)?.options || [];
 			const optionsWithProducts = optionsFromAttributes.filter(option => {
 				const bucket =  this.aggregations.buckets.find(bucketCandidate => bucketCandidate.key === option.value)
@@ -44,8 +45,8 @@ export default {
 				else return false;
 			})
 			return optionsWithProducts;
-		})(),
-	} },
+		},
+	},
 	methods: {
 		emitSelectedChexboxes () {
 			const selectedOptions = this.options.filter(optionCandidate => optionCandidate.selected === true)

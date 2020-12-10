@@ -74,7 +74,7 @@ export default {
         delete this.selectedFilters[name];
       }
 
-      ({result: this.products, aggregations: this.producAaggregations} = await fetchProducts({
+      ({result: this.products, aggregations: this.productAggregations} = await fetchProducts({
         store: this.$store,
         category_ids: [this.category.id],
         selectedFilters: this.selectedFilters,
