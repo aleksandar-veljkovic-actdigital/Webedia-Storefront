@@ -8,10 +8,15 @@
     <div class="middle">
       <section class="aside">
         <Categories :categories="$store.state.category.tree"/>
-        <CatalogFilterCheckbox 
-        code="concerns" 
-        :aggregations="productAggregations.agg_terms_concerns"
-        @changed="modifyFilters('concerns', $event)"/>
+        <h2>Filter by Concern</h2>
+        <CatalogFilterCheckbox  code="concerns" :aggregations="productAggregations.agg_terms_concerns" @changed="modifyFilters('concerns', $event)"/>
+
+        <h2>Filter by Skin Type</h2>
+        <CatalogFilterCheckbox  code="skin_type" :aggregations="productAggregations.agg_terms_skin_type" @changed="modifyFilters('skin_type', $event)"/>
+
+        <h2>Filter by Texture</h2>
+        <CatalogFilterCheckbox  code="texture" :aggregations="productAggregations.agg_terms_texture" @changed="modifyFilters('texture', $event)"/>
+
       </section>
       <section class="main">
         <article
