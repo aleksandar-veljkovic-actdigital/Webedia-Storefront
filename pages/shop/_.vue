@@ -104,36 +104,24 @@ const fetchProducts = async ({store, category_ids = [], selectedFilters = {}}) =
         "filter": {
           "bool": {
             "must": [
-              {"terms": {visibility: [2, 3, 4]}},
-              {"terms": {status: [0,1]}},
-              {terms: {category_ids}},
+              {"terms": {"visibility": [2, 3, 4]}},
+              {"terms": {"status": [0,1]}},
+              {"terms": {category_ids}},
             ],
             "should": [
-              {
-                "bool": {
+              {"bool": {
                   "must": Object.keys(selectedFilters).map(filterName => { return {
-                    "terms": {
-                      [filterName]: selectedFilters[filterName]
-                    }
+                    "terms": {[filterName]: selectedFilters[filterName]}
                   }})
-                }
-              },
-              {
-                "bool": {
+              }},
+              {"bool": {
                   "must": [
                     ...Object.keys(selectedFilters).map(filterName => { return {
-                      "terms": {
-                        [filterName + "_options"]: selectedFilters[filterName]
-                      },
+                      "terms": {[filterName + "_options"]: selectedFilters[filterName]},
                     }}),
-                  {
-                    "match": {
-                        "type_id": "configurable"
-                      }
-                    }
+                    {"match": {"type_id": "configurable"}}
                   ]
-                }
-              }
+              }}
             ],
             ...() => (Object.keys(selectedFilters).length < 1) ? {"minimum_should_match": 1} : {},
           }
@@ -142,12 +130,7 @@ const fetchProducts = async ({store, category_ids = [], selectedFilters = {}}) =
     },
     aggs: {
       agg_terms_price: {terms: {field: "price"}},
-      agg_range_price: {
-        range: {
-          field: "price",
-          ranges: [{from: 0, to: 0}, {from: 0, to: 500}, {from: 0, to: 1000}, {from: 0, to: 1500}, {from: 0, to: 2000}, {from: 0, to: 2500}, {from: 0, to: 3000}, {from: 0, to: 3500}, {from: 0, to: 4000}, {from: 500, to: 500}, {from: 500, to: 1000}, {from: 500, to: 1500}, {from: 500, to: 2000}, {from: 500, to: 2500}, {from: 500, to: 3000}, {from: 500, to: 3500}, {from: 500, to: 4000}, {from: 1000, to: 1000}, {from: 1000, to: 150}, {from: 1000, to: 200}, {from: 1000, to: 250}, {from: 1000, to: 300}, {from: 1000, to: 350}, {from: 1000, to: 400}, {from: 1500, to: 150}, {from: 1500, to: 200}, {from: 1500, to: 250}, {from: 1500, to: 300}, {from: 1500, to: 350}, {from: 1500, to: 400}, {from: 2000, to: 200}, {from: 2000, to: 250}, {from: 2000, to: 300}, {from: 2000, to: 350}, {from: 2000, to: 400}, {from: 2500, to: 250}, {from: 2500, to: 300}, {from: 2500, to: 350}, {from: 2500, to: 400}, {from: 3000, to: 300}, {from: 3000, to: 350}, {from: 3000, to: 400}, {from: 3500, to: 350}, {from: 3500, to: 400}, {from: 4000, to: 4000}],
-        }
-      },
+      agg_range_price: {range: {field: "price", ranges: [{from: 0, to: 0}, {from: 0, to: 500}, {from: 0, to: 1000}, {from: 0, to: 1500}, {from: 0, to: 2000}, {from: 0, to: 2500}, {from: 0, to: 3000}, {from: 0, to: 3500}, {from: 0, to: 4000}, {from: 500, to: 500}, {from: 500, to: 1000}, {from: 500, to: 1500}, {from: 500, to: 2000}, {from: 500, to: 2500}, {from: 500, to: 3000}, {from: 500, to: 3500}, {from: 500, to: 4000}, {from: 1000, to: 1000}, {from: 1000, to: 150}, {from: 1000, to: 200}, {from: 1000, to: 250}, {from: 1000, to: 300}, {from: 1000, to: 350}, {from: 1000, to: 400}, {from: 1500, to: 150}, {from: 1500, to: 200}, {from: 1500, to: 250}, {from: 1500, to: 300}, {from: 1500, to: 350}, {from: 1500, to: 400}, {from: 2000, to: 200}, {from: 2000, to: 250}, {from: 2000, to: 300}, {from: 2000, to: 350}, {from: 2000, to: 400}, {from: 2500, to: 250}, {from: 2500, to: 300}, {from: 2500, to: 350}, {from: 2500, to: 400}, {from: 3000, to: 300}, {from: 3000, to: 350}, {from: 3000, to: 400}, {from: 3500, to: 350}, {from: 3500, to: 400}, {from: 4000, to: 4000}],}},
       agg_terms_average_rating_filter: {terms: {field: "average_rating_filter", size: 10}},
       agg_terms_average_rating_filter_options: {terms: {field: "average_rating_filter_options", size: 10}},
       agg_terms_concerns: {terms: {field: "concerns", size: 10}},
