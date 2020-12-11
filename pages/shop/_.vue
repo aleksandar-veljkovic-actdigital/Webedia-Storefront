@@ -13,8 +13,6 @@
             {{productsPerPage}} products
           </option>
         </select>
-
-
         <select @change="modifyProductsOrder($event.srcElement.value)">
           <option 
           v-for="(productsOrder, key) in productsOrderOptions"
