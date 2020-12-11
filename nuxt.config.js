@@ -5,9 +5,12 @@ export default {
     port: publicRuntimeConfig.server.port,
     host: publicRuntimeConfig.server.host,
   },
-  /*
-  ** Headers of the page
-  */
+  publicRuntimeConfig: publicRuntimeConfig,
+  privateRuntimeConfig: privateRuntimeConfig,
+  build: {
+    extend (config, ctx) {
+    }
+  },
   head: {
     title: process.env.npm_package_name || '',
     meta: [
@@ -19,72 +22,29 @@ export default {
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
     ]
   },
-  /*
-  ** Customize the progress-bar color
-  */
   loading: { color: '#fff' },
-  /*
-  ** Global CSS
-  */
   css: [
     './assets/scss/main.scss',
   ],
+  plugins: [
+    '~/plugins/utils.js',
+    '~/plugins/api-es.js',
+  ],
+  buildModules: [
+  ],
+  modules: [
+    // Doc: https://axios.nuxtjs.org/usage
+    '@nuxtjs/axios',
+    '@nuxtjs/style-resources',
+    '@nuxtjs/proxy',
+    'nuxt-i18n',
+  ],
+  axios: {
+  },
   styleResources: {
     scss: [
       './assets/scss/resources.scss',
     ]
-  },
-  /*
-  ** Plugins to load before mounting the App
-  */
-  plugins: [
-    '~/plugins/utils.js',
-    '~/plugins/channel-resolver.js',
-  ],
-  /*
-  ** Nuxt.js dev-modules
-  */
-  buildModules: [
-  ],
-  /*
-  ** Nuxt.js modules
-  */
-  modules: [
-    // Doc: https://axios.nuxtjs.org/usage
-    '@nuxtjs/axios',
-    ['@nuxtjs/style-resources'],
-    [
-      'nuxt-i18n',
-      {
-        locales: ['en', 'fr'],
-        defaultLocale: 'en',
-        vueI18nLoader: true,
-        vueI18n: {
-          fallbackLocale: 'en',
-          detectBrowserLanguage: {
-            useCookie: true,
-            // alwaysRedirect: true
-          },
-        }
-      }
-    ],
-    '@nuxtjs/proxy',
-  ],
-  /*
-  ** Axios module configuration
-  ** See https://axios.nuxtjs.org/options
-  */
-  axios: {
-  },
-  /*
-  ** Build configuration
-  */
-  build: {
-    /*
-    ** You can extend webpack config here
-    */
-    extend (config, ctx) {
-    }
   },
   proxy: {
     ...( privateRuntimeConfig.proxy && privateRuntimeConfig.proxy.elasticsearch_api && {
@@ -97,6 +57,27 @@ export default {
       }
     } || {}),
   },
-  publicRuntimeConfig: publicRuntimeConfig,
-  privateRuntimeConfig: privateRuntimeConfig,
+  i18n: {
+    locales: [
+      { 
+        code: 'en', 
+        iso: 'en-US', /*file: 'en.js'*/ 
+        esStoreCode: "en",
+      },
+      { 
+        code: 'fr', 
+        iso: 'fr-FR', /*file: 'fr.js'*/ 
+        esStoreCode: "",
+      },
+    ],
+    defaultLocale: 'fr',
+    vueI18nLoader: true,
+    vueI18n: {
+      fallbackLocale: 'fr',
+      // detectBrowserLanguage: {
+      //   useCookie: true,
+      //   // alwaysRedirect: true
+      // },
+    }
+  },
 }

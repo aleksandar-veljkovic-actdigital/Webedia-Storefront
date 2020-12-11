@@ -1,5 +1,3 @@
-import {apiEs} from '~/plugins/api-es'
-
 export const state = () => ({
   all: [],
   tree: [],
@@ -41,7 +39,7 @@ export const actions = {
       "sort": [],
       "aggs": {}
     }
-    var {request, response, result} = await apiEs.search('category', {
+    var {request, response, result} = await this.$apiEs.search('category', {
       params: {
         source: JSON.stringify(esQuery),
         source_content_type: 'application/json'

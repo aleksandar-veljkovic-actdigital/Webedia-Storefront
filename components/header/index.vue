@@ -1,15 +1,20 @@
-<template><div class="c--header--index">
-  <me-c />
-  <cart-c />
-</div></template>
+<template>
+  <div class="c--header--index">
+    <Me />
+    <Cart />
+    <MultistoreSelector />
+  </div>
+</template>
 
 <script>
-  import cartC from './cart.vue'
-  import meC from './me.vue'
+  import Cart from './cart.vue'
+  import Me from './me.vue'
+  import MultistoreSelector from './multistore-selector.vue'
   export default {
     components: {
-      cartC,
-      meC,
+      Cart,
+      Me,
+      MultistoreSelector,
     },
   }
 </script>
