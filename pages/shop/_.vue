@@ -4,13 +4,24 @@
     <div class="top">
       <h1>{{category.name}}</h1>
       <div class="drops">
-        <select>
-          <option>a</option>
-          <option>b</option>
+        <!-- // @toDo replace <select> & <option> with some js library due to lack of crossbrowser css styling -->
+        <select @change="modifyProductsPerPage($event.srcElement.value)">
+          <option 
+          v-for="productsPerPage in productsPerPageOptions"
+          :value="productsPerPage"
+          :key="productsPerPage">
+            {{productsPerPage}} products
+          </option>
         </select>
-        <select>
-          <option>c</option>
-          <option>d</option>
+
+
+        <select @change="modifyProductsOrder($event.srcElement.value)">
+          <option 
+          v-for="(productsOrder, key) in productsOrderOptions"
+          :key="key"
+          :value="key">
+            {{productsOrder}}
+          </option>
         </select>
       </div>
     </div>
@@ -56,6 +67,10 @@ export default {
 
   data () { return {
     selectedFilters: {},
+    productsPerPage: productsPerPageOptions[0],
+    productsPerPageOptions: productsPerPageOptions,
+    productsOrderOptions: productsOrderOptions,
+    productsOrder: 'position:asc',
   }},
 
   async asyncData ({store, route}) {
@@ -66,6 +81,7 @@ export default {
     const {result: products, aggregations: producAaggregations} = await fetchProducts({
       store,
       category_ids: [categoryId],
+      productsPerPage: productsPerPageOptions[0],
     });
     ///////// PAGE DATA /////////
     let data = {};
@@ -76,6 +92,29 @@ export default {
   },
 
   methods: {
+
+    async modifyProductsOrder (productsOrder) {
+      console.log('xxxxxxxxx', {productsOrder})
+      this.productsOrder = productsOrder;
+      ({result: this.products, aggregations: this.productAggregations} = await fetchProducts({
+        store: this.$store,
+        category_ids: [this.category.id],
+        selectedFilters: this.selectedFilters,
+        productsPerPage: this.productsPerPage,
+        productsOrder: this.productsOrder,
+      }));
+    },
+
+    async modifyProductsPerPage (productsPerPage) {
+      this.productsPerPage = productsPerPage;
+      ({result: this.products, aggregations: this.productAggregations} = await fetchProducts({
+        store: this.$store,
+        category_ids: [this.category.id],
+        selectedFilters: this.selectedFilters,
+        productsPerPage: this.productsPerPage,
+        productsOrder: this.productsOrder,
+      }));
+    },
 
     async modifyFilters (name, ids) {
       if (ids.length > 0) {
@@ -88,6 +127,8 @@ export default {
         store: this.$store,
         category_ids: [this.category.id],
         selectedFilters: this.selectedFilters,
+        productsPerPage: this.productsPerPage,
+        productsOrder: this.productsOrder,
       }));
     }
 
@@ -95,10 +136,20 @@ export default {
 
 }
 
-const fetchProducts = async ({store, category_ids = [], selectedFilters = {}}) => {
+const productsPerPageOptions = [12, 30]
+
+const productsOrderOptions = {
+  'updated_at:desc': "New arrivals",
+  'final_price:asc': "Price: Low to high",
+  'final_price:desc': "Price: High to low",
+}
+
+const fetchProducts = async ({store, category_ids = [], selectedFilters = {}, productsPerPage = 12, productsOrder = 'updated_at:desc'}) => {
   const esQuery = {
-    size: 12,
-    sort: [{updated_at: {order: "desc"}}],
+    "size": productsPerPage,
+    "sort": [
+      {[productsOrder.split(':')[0]]: {order: productsOrder.split(':')[1]}},
+    ],
     "query": {
       "bool": {
         "filter": {
