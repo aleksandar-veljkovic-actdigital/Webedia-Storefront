@@ -65,10 +65,10 @@ export default {
 
   data () { return {
     selectedFilters: {},
-    productsPerPage: productsPerPageOptions[0],
     productsPerPageOptions: productsPerPageOptions,
+    productsPerPage: productsPerPageOptions[0],
     productsOrderOptions: productsOrderOptions,
-    productsOrder: 'position:asc',
+    productsOrder: 'updated_at:desc',
   }},
 
   async asyncData ({store, route}) {
