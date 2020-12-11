@@ -92,7 +92,6 @@ export default {
   methods: {
 
     async modifyProductsOrder (productsOrder) {
-      console.log('xxxxxxxxx', {productsOrder})
       this.productsOrder = productsOrder;
       ({result: this.products, aggregations: this.productAggregations} = await fetchProducts({
         store: this.$store,
