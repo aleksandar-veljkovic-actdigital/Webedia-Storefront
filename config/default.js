@@ -4,7 +4,8 @@ export const config = {
     "host": '0.0.0.0'
   },
   "sylius": {
-    "api": "http://plab.en/shop-api"
+    "api": "http://plab.en/shop-api",
+    "bitbag_api": "https://staging-plab-bo.webedia.shop/vsbridge/api",
   },
   "elasticsearch": {
     "api": "http://0.0.0.0:3003/api/es"

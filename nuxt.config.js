@@ -29,6 +29,8 @@ export default {
   plugins: [
     '~/plugins/utils.js',
     '~/plugins/api-es.js',
+    '~/plugins/api-bitbag.js',
+    '~/plugins/events.js',
   ],
   buildModules: [
   ],
