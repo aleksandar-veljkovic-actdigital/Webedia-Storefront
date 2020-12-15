@@ -47,17 +47,14 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 
-import Logo from '~/components/Logo.vue'
-import ProductItem from '~/components/product/product-item.vue'
-import CatalogFilterCheckbox from '~/components/product/filters.vue'
-import Categories from '~/components/categories.vue'
+import ProductItem from '~/components/shop/teaser.vue'
+import Categories from '~/components/shop/categories.vue'
+import CatalogFilterCheckbox from '~/components/shop/filters.vue'
 
 export default {
   name: 'shop',
   components: {
-    Logo,
     ProductItem,
     CatalogFilterCheckbox,
     Categories,
