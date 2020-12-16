@@ -37,7 +37,7 @@ export const actions = {
         dispatch('me');
       }
       else {
-        ls.set('authToken', false);
+        dispatch('logout')
       }
     }
     catch (err) {
@@ -56,5 +56,10 @@ export const actions = {
     // }
 
   },
+
+  async logout () {
+    ls.set('authToken', false);
+    this.commit('user/SET_ME', null);
+  }
 
 }

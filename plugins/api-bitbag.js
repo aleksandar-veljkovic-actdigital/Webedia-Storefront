@@ -31,7 +31,7 @@ export default ({app: {i18n}}, inject) => {
         const response = await apiBase.get(url, config);
         return response.data;
       } catch (err) {
-        // console.error('apiBitbag get net error', {err})
+        console.error('apiBitbag get net error', {err})
       }
     },
 
@@ -44,7 +44,7 @@ export default ({app: {i18n}}, inject) => {
         const response = await apiBase.post(url, data, config);
         return response.data;
       } catch (err) {
-        // console.error('apiBitbag get net error', {err})
+        console.error('apiBitbag get net error', {err})
       }
     },
     
