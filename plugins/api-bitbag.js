@@ -6,7 +6,7 @@ import { ls } from './ls';
 export default ({app: {i18n}}, inject) => {
 
   const authorisation = () => {
-    const token = ls.get('authToken');
+    const token = ls.get('user--token');
     if (token) {
       return {'Authorization': "Bearer " + token,}
     }
@@ -23,6 +23,12 @@ export default ({app: {i18n}}, inject) => {
   const apiBitbag = {
 
     async get(url, config = {}) {
+      config.params = {
+          cartId: ls.get('cart--id'), 
+          token: ls.get('user--token'), 
+          storeCode: i18n.locale,
+          ...config.params
+      }
       config.headers = {
         'Content-Type': 'application/json;charset=UTF-8',
         ...authorisation(),
@@ -31,7 +37,8 @@ export default ({app: {i18n}}, inject) => {
         const response = await apiBase.get(url, config);
         return response.data;
       } catch (err) {
-        console.error('apiBitbag get net error', {err})
+        // console.error('apiBitbag get net error', {err})
+        return err;
       }
     },
 
@@ -44,7 +51,8 @@ export default ({app: {i18n}}, inject) => {
         const response = await apiBase.post(url, data, config);
         return response.data;
       } catch (err) {
-        console.error('apiBitbag get net error', {err})
+        // console.error('apiBitbag get net error', {err})
+        return err;
       }
     },
     

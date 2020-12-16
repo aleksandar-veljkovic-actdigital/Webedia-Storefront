@@ -33,7 +33,7 @@ export const actions = {
     try {
       const response = await this.$apiBitbag.post('user/login', params);
       if (response?.code == 200) {
-        ls.set('authToken', response.result);
+        ls.set('user--token', response.result);
         dispatch('me');
       }
       else {
@@ -47,7 +47,7 @@ export const actions = {
     // try {
     //   params.token = ls.get('cartId');
     //   const resp = await apiSylius.post('/login', params);
-    //   ls.set('authToken', resp.token);
+    //   ls.set('user--token', resp.token);
     //   dispatch('me');
     //   this.dispatch('cart/getCarts');
     // }
@@ -58,7 +58,7 @@ export const actions = {
   },
 
   async logout () {
-    ls.set('authToken', false);
+    ls.set('user--token', false);
     this.commit('user/SET_ME', null);
   }
 

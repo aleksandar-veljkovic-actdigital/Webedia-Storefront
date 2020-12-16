@@ -4,7 +4,7 @@ import { ls } from './ls';
 import {config} from '~/config'
 
 const authorisation = () => {
-  const token = ls.get('authToken');
+  const token = ls.get('user--token');
   if (token) {
     return {'Authorization': "Bearer " + token,}
   }
@@ -28,7 +28,7 @@ apiBase.interceptors.response.use(
   }, 
   async function (error) {
     if (process.client && error.response.status == 401) {
-      ls.set('authToken', false)
+      ls.set('user--token', false)
     }
     return Promise.reject(error);
   }
@@ -36,7 +36,7 @@ apiBase.interceptors.response.use(
 
 const apiSylius = {
 
-  async get(url, config = { params: {} }) {
+  async get(url, config = {}) {
     config.headers = {
       'Content-Type': 'application/json;charset=UTF-8',
       ...authorisation(),

@@ -6,7 +6,7 @@
       {{cart.items}}      
       {{cart.totals}}
     </div>
-    <span class="c--header--cart--number" v-if="isItems">{{ quantity }}</span>
+    <!-- <span class="c--header--cart--number" v-if="isItems">{{ quantity }}</span> -->
     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24" height="24" viewBox="0 0 24 24">
       <defs>
           <path id="prefix__a" d="M0 0L21.576 0 21.576 24 0 24z"/>
@@ -24,7 +24,11 @@
 <script>
 import {component} from '~/store/cart.js'
 export default {
-  ...component,
+  computed: {
+    cart () {
+      return this.$store.state.cart;
+    }
+  }
 };
 </script>
 
