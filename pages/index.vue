@@ -1,5 +1,5 @@
 <template>
-  <div class="p--home p--index">
+  <div class="p--home">
 
     <h1>Boutique Webedia</h1>
 
