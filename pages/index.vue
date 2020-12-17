@@ -1,7 +1,8 @@
 <template>
   <div class="p--home p--index">
-    <n-link :to="localePath('/shop')">shop</n-link>
-    <n-link :to="localePath('/test')">test</n-link>
+
+    <h1>Webedia Boutique</h1>
+
   </div>
 </template>
 
