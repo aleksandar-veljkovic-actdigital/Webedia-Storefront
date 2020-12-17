@@ -1,7 +1,7 @@
 <template>
   <div class="p--home p--index">
 
-    <h1>Webedia Boutique</h1>
+    <h1>Boutique Webedia</h1>
 
   </div>
 </template>
