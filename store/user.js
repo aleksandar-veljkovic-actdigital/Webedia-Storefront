@@ -2,13 +2,19 @@ import {apiSylius} from '~/plugins/api-sylius'
 import {ls} from '~/plugins/ls'
 
 export const state = () => ({
-  me: null,
+  me: false,
 })
 
 export const mutations = {
   SET_ME (state, muUserData) {
     state.me = muUserData;
   },
+}
+
+export const getters = {
+  token: (state) => () => {
+    return ls.get('user--token');
+  }
 }
 
 export const actions = {
@@ -34,10 +40,16 @@ export const actions = {
       const response = await this.$apiBitbag.post('user/login', params);
       if (response?.code == 200) {
         ls.set('user--token', response.result);
-        dispatch('me');
+        await Promise.all([
+          await dispatch('me'),
+          await (async () => {
+            await this.dispatch('cart/create')
+            await this.dispatch('cart/pull')
+          })(),
+        ])
       }
       else {
-        dispatch('logout')
+        await dispatch('localLogout')
       }
     }
     catch (err) {
@@ -54,12 +66,12 @@ export const actions = {
     // catch (err) {
     //   this.$utils.catchHandler(err);
     // }
-
   },
 
-  async logout () {
+  async localLogout ({commit}) {
     ls.set('user--token', false);
-    this.commit('user/SET_ME', null);
+    commit('SET_ME', false);
+    await this.dispatch('cart/localClear')
   }
 
 }

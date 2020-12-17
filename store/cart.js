@@ -1,13 +1,26 @@
 import {ls} from '~/plugins/ls'
 
-export const state = () => ({
-  items: undefined,
-  totals: undefined,
-})
+const defaultState = {
+  items: [],
+  totals: {},
+}
+
+export const state = () => (defaultState)
+
+export const getters = {
+  id: () => () => {
+    return ls.get('cart--id');
+  }
+}
 
 export const mutations = {
+
   SET_ITEMS (state, items) {
     state.items = items;
+  },
+
+  LOAD_DEFAULT_STATE (state) {
+    Object.assign(state, defaultState)
   }
 
 }
@@ -28,5 +41,10 @@ export const actions = {
     commit('SET_ITEMS', items)
     return response;
   },
+
+  async localClear ({commit}) {
+    ls.set('cart--id', false)
+    commit('LOAD_DEFAULT_STATE')
+  }
 
 }
