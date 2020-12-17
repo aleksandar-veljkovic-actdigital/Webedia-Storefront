@@ -47,9 +47,10 @@ export const actions = {
             await this.dispatch('cart/pull')
           })(),
         ])
+        return response;
       }
       else {
-        await dispatch('localLogout')
+        return response;
       }
     }
     catch (err) {
@@ -68,10 +69,11 @@ export const actions = {
     // }
   },
 
-  async localLogout ({commit}) {
+  async logout ({commit}) {
     ls.set('user--token', false);
     commit('SET_ME', false);
     await this.dispatch('cart/localClear')
+    return true;
   }
 
 }

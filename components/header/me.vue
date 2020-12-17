@@ -5,7 +5,9 @@
       <input ref="username" placeholder="email" />
       <input ref="password" placeholder="password" />
       <button>login</button>
+      <button @click.prevent="$store.dispatch('user/logout')">logout</button>
     </form>
+    
   </div>
 </template>
 
@@ -23,12 +25,19 @@ export default {
 
   methods: {
 
-    login () {
+    async login () {
       const requestData = {
         username: this.$refs.username.value,
         password: this.$refs.password.value,
       }
-      this.$store.dispatch('user/login', requestData)
+      const loginResponse = await this.$store.dispatch('user/login', requestData)
+      if (loginResponse.code == 200) {
+        this.$store.dispatch('ui/message', {title: 'You Have Successfully Logged in'});
+      }
+      else if (typeof(loginResponse.result) === "string" ) {
+        this.$store.dispatch('ui/message', {title: loginResponse.result, type: "error"});
+      }
+      
     }
 
   },
