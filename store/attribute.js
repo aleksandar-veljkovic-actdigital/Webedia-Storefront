@@ -27,12 +27,12 @@ export const actions = {
       "sort": [],
       "aggs": {}
     }
-    var {request, response, result} = await this.$apiEs.search('attribute', {
+    var esData = await this.$apiEs.search('attribute', {
       params: {
         source: JSON.stringify(esQuery),
         source_content_type: 'application/json'
       }
     })
-    return  {request, response, result};
+    return  esData;
   },
 }

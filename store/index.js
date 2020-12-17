@@ -3,17 +3,27 @@ import {ls} from '~/plugins/ls'
 export const actions = {
 
   async nuxtServerInit({ dispatch, commit }) {
+    const error = this.app.nuxt.error;
     // @toDo :: ssr cache should goes hire
     await Promise.all([
       await (async () => {
         const {result: attributes} = await dispatch('attribute/fetchAll')
-        commit('attribute/SET_ALL', attributes)
-
+        if (attributes) {
+          commit('attribute/SET_ALL', attributes)
+        }
+        else {
+          error({ statusCode: 500, message: 'ES Attributes Unavalible' })
+        }
       })(),
       await (async () => {
         const {result: categories} = await dispatch('category/fetchAll')
-        commit('category/SET_ALL', categories)
-        commit('category/SET_TREE', categories)
+        if (categories) {
+          commit('category/SET_ALL', categories)
+          commit('category/SET_TREE', categories)
+        }
+        else {
+          error({ statusCode: 500, message: 'ES Categories Unavalible' })
+        }
       })(),
     ])
   },

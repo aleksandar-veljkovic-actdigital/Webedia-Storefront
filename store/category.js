@@ -39,12 +39,12 @@ export const actions = {
       "sort": [],
       "aggs": {}
     }
-    var {request, response, result} = await this.$apiEs.search('category', {
+    var esData = await this.$apiEs.search('category', {
       params: {
         source: JSON.stringify(esQuery),
         source_content_type: 'application/json'
       }
     })
-    return  {request, response, result};
+    return  esData;
   },
 }

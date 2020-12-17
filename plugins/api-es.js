@@ -26,7 +26,7 @@ export default ({app: {i18n}}, inject) => {
       return {
         request,
         response: request?.data,
-        result: request?.data?.hits?.hits?.map((hit)=>hit._source) || [],
+        result: request?.data?.hits?.hits?.map((hit)=>hit._source),
         aggregations: request?.data?.aggregations,
       };
     },
