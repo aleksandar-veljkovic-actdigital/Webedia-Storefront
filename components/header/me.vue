@@ -37,7 +37,6 @@ export default {
       else if (typeof(loginResponse.result) === "string" ) {
         this.$store.dispatch('ui/message', {title: loginResponse.result, type: "error"});
       }
-      
     }
 
   },
