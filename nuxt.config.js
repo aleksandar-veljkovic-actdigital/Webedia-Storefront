@@ -65,11 +65,13 @@ export default {
         code: 'en', 
         iso: 'en-US', /*file: 'en.js'*/ 
         esStoreCode: "en",
+        file: 'en-US.js'
       },
       { 
         code: 'fr', 
         iso: 'fr-FR', /*file: 'fr.js'*/ 
         esStoreCode: "",
+        file: 'fr-FR.js'
       },
     ],
     defaultLocale: 'fr',
@@ -80,6 +82,9 @@ export default {
       //   useCookie: true,
       //   // alwaysRedirect: true
       // },
-    }
+      silentTranslationWarn: true,
+    },
+    lazy: true,
+    langDir: 'lang/',
   },
 }
