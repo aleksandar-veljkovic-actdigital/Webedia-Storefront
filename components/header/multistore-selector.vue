@@ -2,17 +2,18 @@
   <div class="c--header--multistore-selector">
     <a
     v-for="(locale, ix) in $i18n.locales"
-    :key="ix"
+    :key="'a-'+ix"
     :class="{active: locale.code === $i18n.locale}"
     :href="localePath('/', locale.code)">
-      {{locale.code}}
+      {{locale.code}}-hp |
     </a>
-    <!-- <n-link 
+    <n-link 
     v-for="(locale, ix) in $i18n.locales"
-    :key="ix"
+    :key="'n-link-'+ix"
+    :class="{active: locale.code === $i18n.locale}"
     :to="switchLocalePath(locale.code)">
-      {{locale.code}}
-    </n-link> -->
+      | {{locale.code}}
+    </n-link>
   </div>
 </template>
 
