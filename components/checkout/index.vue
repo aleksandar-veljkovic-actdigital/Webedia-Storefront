@@ -6,12 +6,15 @@
     <AddressForm 
     v-model="shippingAddress"/>
 
+    <PaymentDalenys />
+
   </div>
 </template>
 
 <script>
 
 import AddressForm from "./address-form.vue"
+import PaymentDalenys from "./payment--dalenys"
 
 export default {
 
@@ -21,6 +24,7 @@ export default {
 
   components: {
     AddressForm,
+    PaymentDalenys,
   }
 
 }
