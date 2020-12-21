@@ -5,9 +5,6 @@
 
     <AddressForm 
     v-model="shippingAddress"/>
-    {{shippingAddress}}
-
-    address_name<input v-model="shippingAddress.address_name">
 
   </div>
 </template>

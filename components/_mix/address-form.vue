@@ -1,54 +1,62 @@
 <template>
   <div class="c--mix--address-form">
 
-    <form
-    @input="fromInputHandler"
-    ref='form'>
+    <form>
 
       <label>{{$t('Address Name')}}:<input
       type='text'
-      v-model.trim="valueLocal.address_name"></label>
+      v-model.trim="valueLocal.address_name"
+      @input="fromInputHandler"></label>
 
       <label><input 
       type="radio"
       v-model="valueLocal.gender"
-      value="mr">{{$t('Mr')}}</label>
+      value="mr"
+      @change="fromInputHandler">{{$t('Mr')}}</label>
       <label><input 
       type="radio"
       v-model="valueLocal.gender"
-      value="mrs">{{$t('Mrs')}}</label>
+      value="mrs"
+      @change="fromInputHandler">{{$t('Mrs')}}</label>
 
       <label>{{$t('First Name')}}:<input
       type='text'
-      v-model.trim="valueLocal.firstname"></label>
+      v-model.trim="valueLocal.firstname"
+      @input="fromInputHandler"></label>
 
       <label>{{$t('Last Name')}}:<input
       type='text'
-      v-model.trim="valueLocal.lastname"></label>
+      v-model.trim="valueLocal.lastname"
+      @input="fromInputHandler"></label>
 
       <label>{{$t('Company')}}:<input
       type='text'
-      v-model.trim="valueLocal.company"></label>
+      v-model.trim="valueLocal.company"
+      @input="fromInputHandler"></label>
 
       <label>{{$t('Address')}}:<input
       type='text'
-      v-model.trim="valueLocal.address"></label>
+      v-model.trim="valueLocal.address"
+      @input="fromInputHandler"></label>
 
       <label>{{$t('Address Additional')}}:<input
       type='text'
-      v-model.trim="valueLocal.second_street"></label>
-
+      v-model.trim="valueLocal.second_street"
+      @input="fromInputHandler"></label>
 
       <label>{{$t('Post Code')}}:<input
       type='text'
-      v-model.trim="valueLocal.postcode"></label>
+      v-model.trim="valueLocal.postcode"
+      @input="fromInputHandler"></label>
 
       <label>{{$t('City')}}:<input
       type='text'
-      v-model.trim="valueLocal.city"></label>
+      v-model.trim="valueLocal.city"
+      @input="fromInputHandler"></label>
 
       <label>{{$t('Country')}}:<select
-      v-model="valueLocal.country">
+      v-model="valueLocal.country"
+      @change="fromInputHandler">
         <option
           v-for="country in [{code: 'fr', name: 'France'}, {code: 'gb', name: 'Great Brit'}]"
           :key="country.code"
@@ -59,12 +67,10 @@
 
       <label>{{$t('Telephone')}}:<input
       type='text'
-      v-model.trim="valueLocal.telephone"></label>
+      v-model.trim="valueLocal.telephone"
+      @input="fromInputHandler"></label>
 
     </form>
-
-    valueLocal {{valueLocal}}<hr>
-    value {{value}}<hr>
 
   </div>
 </template>
