@@ -1,5 +1,6 @@
 <template>
-  <div class="p-w-d">
+  <div class="c--checkout--payment--dalenys">
+    <client-only>
     <form
       method="post"
       action="#"
@@ -32,6 +33,7 @@
       </p>
 
     </form>
+    </client-only>
   </div>
 </template>
 
@@ -97,18 +99,43 @@ export default {
     };
   },
 
-  mounted() {
-    this.clearUiUnauthorised();
-    // this.hfields = window["dalenys"].hostedFields(this.hfieldsConfig);
-    // this.hfields.load();
+  mounted () {
+    if (!window.document.getElementById('dalenys-script')) {
+      const script = window.document.createElement('script');
+      script.onload = () => {
+        this.initDalenys()
+      }
+      script.type = 'text/javascript';
+      document.getElementsByTagName('head')[0].appendChild(script);
+      script.src = this.$config.payment.dalenys.sdkUrl;
+      script.id = "dalenys-script";
+    }
+    else {
+      this.initDalenys()
+    }
   },
 
   beforeDestroy() {
-    // this.hfields.dispose();
+    this.hfields.dispose();
   },
 
   methods: {
-    async tokenizeDalenys() {
+
+    initDalenys () {
+      this.$nextTick(() => {
+        console.log('xxxxxxxxx', window.document.getElementById(this.hfieldsConfig.fields.brand.id))
+        try {
+          this.hfields = window["dalenys"].hostedFields(this.hfieldsConfig);
+          this.hfields.load();
+        }
+        catch(err) {
+          console.error("dalenys fail to init", err)
+        }
+      })
+
+    },
+
+    async tokenizeDalenys () {
       const _this = this;
 
       await new Promise((resolve, reject) => {
@@ -127,11 +154,6 @@ export default {
       });
     },
 
-    clearUiUnauthorised() {
-      // window["document"]
-      //   .querySelector(".payment-methods-group")
-      //   .classList.remove("unauthorised");
-    }
   }
 };
 </script>
