@@ -8,29 +8,35 @@
       name="be2billForm"
       @submit.prevent="tokenizeHandlerSubmitDetails"
     >
-      <span class="brand-container" :id="`brand-container-${rndId}`" />
+      <div>
+        <span class="input-container brand-container" :id="`brand-container-${rndId}`" />
+      </div>
 
-      <p>
-        <input
-          v-model.trim="cardHolderName"
-          class="payment--full-name"
-          :placeholder="$t('Last name and first name')"/>
-      </p>
+      <div>
+        <span class="input-container name-container">
+          <div class="iframe">
+            <input
+              v-model.trim="cardHolderName"
+              class="payment--full-name"
+              :placeholder="$t('Last name and first name')"/>
+          </div>
+        </span>
+      </div>
 
-      <p>
+      <div>
         <!-- Here is the card container -->
         <span class="input-container card-container" :id="`card-container-${rndId}`" />
-      </p>
+      </div>
 
-      <p>
+      <div>
         <!-- Here is the expiry container -->
         <span class="input-container expiry-container" :id="`expiry-container-${rndId}`" />
-      </p>
+      </div>
 
-      <p>
+      <div>
         <!-- Here is the cryptogram container -->
         <span class="input-container cvv-container" :id="`cvv-container-${rndId}`" />
-      </p>
+      </div>
 
     </form>
     </client-only>
@@ -95,7 +101,6 @@ export default {
       hfieldsConfig: hfieldsConfig,
       hfields: false,
       cardHolderName: "",
-      tokens: false,
     };
   },
 
@@ -123,7 +128,6 @@ export default {
 
     initDalenys () {
       this.$nextTick(() => {
-        console.log('xxxxxxxxx', window.document.getElementById(this.hfieldsConfig.fields.brand.id))
         try {
           this.hfields = window["dalenys"].hostedFields(this.hfieldsConfig);
           this.hfields.load();
@@ -136,20 +140,17 @@ export default {
     },
 
     async tokenizeDalenys () {
-      const _this = this;
-
-      await new Promise((resolve, reject) => {
+      return new Promise((resolve, reject) => {
         this.hfields.createToken(result => {
           if (result.execCode === "0000") {
-            _this.tokens = {
+            const tokens = {
               cardHolderName: this.cardHolderName,
               dalenysPayCardToken: result
             }
-            this.clearUiUnauthorised();
+            resolve(tokens)
           } else {
-            _this.tokens = false;
+            resolve(false)
           }
-          resolve();
         });
       });
     },
@@ -158,6 +159,41 @@ export default {
 };
 </script>
 
-<style lang='scss' scoped>
+<style lang='scss'>
+.c--checkout--payment--dalenys {
+  .input-container {
+    display: block;
+    height: 55px;
+    width: 500px;
+    outline: 1px solid gray;
+    margin: 4px;
+    padding: 4px;
+    &.hosted-fields-invalid-state {
+      outline: 1px solid red;
+    }
+  }
+  .brand-container {
+      width: 76px;
+      // float: right;
+  }
+  .name-container {
 
+    input {
+      font-size: 18px;
+      line-height: 47px;
+      color: #737373;
+      font-family: "Times New Roman";
+      border: 0px solid transparent;
+      display: inline-block;
+      width: 100%;
+    }
+    input::placeholder {
+      font-size: 1em;
+      color: #737373;
+    }
+    .iframe {
+      position: relative;
+    }
+  }
+}
 </style>

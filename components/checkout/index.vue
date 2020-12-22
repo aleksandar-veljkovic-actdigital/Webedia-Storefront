@@ -6,7 +6,13 @@
     <AddressForm 
     v-model="shippingAddress"/>
 
-    <PaymentDalenys />
+    <PaymentDalenys
+    ref="paymentDalenysComponent" />
+
+    <button 
+    @click="placeOrder">
+      {{$t('place order')}}
+    </button>
 
   </div>
 </template>
@@ -25,6 +31,14 @@ export default {
   components: {
     AddressForm,
     PaymentDalenys,
+  },
+
+  methods: {
+    async placeOrder() {
+      const paymentDalenysComponent = this.$refs.paymentDalenysComponent
+      const dalenysTokens = await paymentDalenysComponent.tokenizeDalenys();
+      console.log('xxxxxxxxx dalenysTokens', dalenysTokens)
+    },
   }
 
 }
