@@ -11,12 +11,12 @@
       <label><input 
       type="radio"
       v-model="valueLocal.gender"
-      value="mr"
+      value="m"
       @change="fromInputHandler">{{$t('Mr')}}</label>
       <label><input 
       type="radio"
       v-model="valueLocal.gender"
-      value="mrs"
+      value="f"
       @change="fromInputHandler">{{$t('Mrs')}}</label>
 
       <label>{{$t('First Name')}}:<input
@@ -36,7 +36,7 @@
 
       <label>{{$t('Address')}}:<input
       type='text'
-      v-model.trim="valueLocal.address"
+      v-model.trim="valueLocal.street"
       @input="fromInputHandler"></label>
 
       <label>{{$t('Address Additional')}}:<input
@@ -55,10 +55,10 @@
       @input="fromInputHandler"></label>
 
       <label>{{$t('Country')}}:<select
-      v-model="valueLocal.country"
+      v-model="valueLocal.country_id"
       @change="fromInputHandler">
         <option
-          v-for="country in [{code: 'fr', name: 'France'}, {code: 'gb', name: 'Great Brit'}]"
+          v-for="country in [{code: 'FR', name: 'France'}, {code: 'GB', name: 'Great Brit'}]"
           :key="country.code"
           :value="country.code">
           {{ country.name }}
@@ -84,16 +84,21 @@ export default {
   ],
 
   data () {return {
-    valueLocal: {...this.value},
+    valueLocal: {},
   }}, 
 
   watch: {
+
     value: {
       deep: true,
       handler () {
         this.valueChangeHandler()
       },
     },
+
+    '$store.state.user.me.email' () {
+      this.valueChangeHandler()
+    }
 
   },
 
@@ -104,17 +109,21 @@ export default {
   methods: {
 
     valueChangeHandler () {
-      console.log('xxxxxxxxx valueChangeHandler')
       this.valueLocal = {
         ...this.value,
-        address: this.$utils.optionalChaining(this.value, '.address[0]') || '',
+        street: this.$utils.optionalChaining(this.value, '.street[0]') || '',
+        gender: this.value.gender || "u",
+        // save_details
+        email: !("value.email" in this) ? this.$store.state.user.me.email : this.value.email,
+        region: "",
+        region_id: 0,
+        region_code: "",
       }
     },
 
     fromInputHandler () {
-      console.log('xxxxxxxxx fromInputHandler', this.$refs.form)
       let valueLocal = {...this.valueLocal}
-      valueLocal.address = (this.valueLocal.address) ? [(this.valueLocal.address), ''] : (['', ''])
+      valueLocal.street = (this.valueLocal.street) ? [(this.valueLocal.street), ''] : (['', ''])
       this.$emit('input', valueLocal)
     }
 
