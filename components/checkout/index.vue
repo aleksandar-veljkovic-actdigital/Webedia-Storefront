@@ -13,8 +13,7 @@
     @click="placeOrder">
       {{$t('place order')}}
     </button>
-<pre>{{shippingAddress}}
-</pre>
+
   </div>
 </template>
 
