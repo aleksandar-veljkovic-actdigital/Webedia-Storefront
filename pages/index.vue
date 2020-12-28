@@ -8,6 +8,7 @@
 
 <script>
   export default {
-    name: 'home'
+    name: 'home',
+    layout: 'boutique-layout'
   }
 </script>

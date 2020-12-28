@@ -41,6 +41,7 @@ export default {
     '@nuxtjs/style-resources',
     '@nuxtjs/proxy',
     'nuxt-i18n',
+    '~/plugins/boutique'
   ],
   axios: {
   },
@@ -106,13 +107,12 @@ export default {
         }
       })
       config.resolve.alias['@components'] = path.resolve(__dirname, '../../components')
-      // console.log('xxxxxxxxx config build extend :: ', config.resolve.alias, boutiqueComponents, themeComponents);
 		}
 	},
 
   router: {
     async extendRoutes(routes, resolve) {
-      console.log('xxxxxxxxx config extendRoutes')
+      // console.log('xxxxxxxxx config extendRoutes')
     }
   }
 
