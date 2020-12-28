@@ -1,6 +1,6 @@
 <script>
 
-import AddressForm from "~/components/_mix/address-form.vue"
+import AddressForm from "@components/_mix/address-form.vue"
 
 export default {
 

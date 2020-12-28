@@ -16,7 +16,7 @@
 </template>
 
 <script>
-  import DebugData from '~/components/debug-data.vue'
+  import DebugData from '@components/_mix/debug-data.vue'
 
   export default {
     name: 'categories',

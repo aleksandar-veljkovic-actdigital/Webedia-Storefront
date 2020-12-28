@@ -96,6 +96,7 @@ export default {
 
 	build: {
 		extend(config, ctx) {
+      // @component templating system
       const themeComponents = glob.sync("components/**/**.vue");
       const boutiqueComponents = glob.sync(__dirname + "/components/**/**.vue")
       boutiqueComponents.map(boutiqueComponent => {

@@ -4,7 +4,7 @@
 
 <script>
 
-import CheckoutComponent from '~/components/checkout'
+import CheckoutComponent from '@components/checkout'
 
 export default {
 

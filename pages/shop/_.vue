@@ -48,9 +48,9 @@
 
 <script>
 
-import ProductItem from '~/components/shop/teaser.vue'
-import Categories from '~/components/shop/categories.vue'
-import CatalogFilterCheckbox from '~/components/shop/filters.vue'
+import ProductItem from '@components/shop/teaser.vue'
+import Categories from '@components/shop/categories.vue'
+import CatalogFilterCheckbox from '@components/shop/filters.vue'
 
 export default {
   name: 'shop',
