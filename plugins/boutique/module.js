@@ -1,3 +1,5 @@
+import path from "path";
+
 export default function ExampleModule(moduleOptions) {
 
   this.addLayout(path.resolve(__dirname + "/layouts/boutique-layout.vue"))

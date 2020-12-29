@@ -1,17 +1,9 @@
-<template>
-  <CheckoutComponent class="p--checkout" />
-</template>
-
 <script>
 
-import CheckoutComponent from '@components/checkout/index.vue'
+import Checkout from '~/plugins/boutique/pages/checkout.vue'
 
 export default {
-
-  name: 'checkout',
-
-  components: {CheckoutComponent}
-
+  mixins: [Checkout],
 }
 
 </script>

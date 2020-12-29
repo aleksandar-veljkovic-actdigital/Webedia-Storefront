@@ -1,14 +1,9 @@
-<template>
-  <div class="p--home">
-
-    <h1>Boutique Webedia</h1>
-
-  </div>
-</template>
-
 <script>
-  export default {
-    name: 'home',
-    layout: 'boutique-layout'
-  }
+
+import HP from '~/plugins/boutique/pages/index.vue'
+
+export default {
+  mixins: [HP],
+}
+
 </script>
