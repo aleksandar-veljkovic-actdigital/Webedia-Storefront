@@ -32,6 +32,7 @@ export default {
     '~/plugins/api-es.js',
     '~/plugins/api-bitbag.js',
     '~/plugins/events.js',
+    '~/plugins/boutique/plugin.js',
   ],
   buildModules: [
   ],
