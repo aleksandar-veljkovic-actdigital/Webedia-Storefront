@@ -1,6 +1,6 @@
 <script>
 
-import HP from '~/plugins/boutique/pages/index.vue'
+import HP from '@core/pages/index.vue'
 
 export default {
   mixins: [HP],

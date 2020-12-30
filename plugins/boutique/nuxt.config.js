@@ -108,6 +108,7 @@ export default {
         }
       })
       config.resolve.alias['@components'] = path.resolve(__dirname, '../../components')
+      config.resolve.alias['@core'] = path.resolve(__dirname)
 		}
 	},
 

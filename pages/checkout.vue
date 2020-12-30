@@ -1,6 +1,6 @@
 <script>
 
-import Checkout from '~/plugins/boutique/pages/checkout.vue'
+import Checkout from '@core/pages/checkout.vue'
 
 export default {
   mixins: [Checkout],

@@ -1,6 +1,6 @@
 <script>
 
-import Catalog from '~/plugins/boutique/pages/catalog.vue'
+import Catalog from '@core/pages/catalog.vue'
 
 export default {
   mixins: [Catalog],

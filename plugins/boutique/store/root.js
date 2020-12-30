@@ -31,7 +31,6 @@ export default {
     },
 
     async clientInit({ dispatch, commit, getters }) {
-      console.log('xxxxxxxxx clientInit BQ')
       const userToken = getters['user/token']();
       const cartId = getters['cart/id']();
       if (userToken) {
