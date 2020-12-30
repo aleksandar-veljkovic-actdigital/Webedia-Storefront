@@ -10,7 +10,9 @@ export default {
 
   name: 'checkout',
 
-  components: {CheckoutComponent}
+  layout: 'boutique-layout',
+
+  components: {CheckoutComponent},
 
 }
 

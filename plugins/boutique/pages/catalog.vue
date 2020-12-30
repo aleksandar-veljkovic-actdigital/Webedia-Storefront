@@ -53,7 +53,11 @@ import Categories from '@components/shop/categories.vue'
 import CatalogFilterCheckbox from '@components/shop/filters.vue'
 
 export default {
+
   name: 'shop',
+
+  layout: 'boutique-layout',
+
   components: {
     ProductItem,
     CatalogFilterCheckbox,
