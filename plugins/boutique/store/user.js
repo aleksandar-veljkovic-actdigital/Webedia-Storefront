@@ -1,5 +1,5 @@
-import {apiSylius} from '~/plugins/api-sylius'
-import {ls} from '~/plugins/ls'
+// import {apiSylius} from '~/plugins/api-sylius'
+import {ls} from '@core/plugins/ls'
 
 export default {
 

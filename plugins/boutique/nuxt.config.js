@@ -28,10 +28,10 @@ export default {
     './assets/scss/main.scss',
   ],
   plugins: [
-    '~/plugins/utils.js',
-    '~/plugins/api-es.js',
-    '~/plugins/api-bitbag.js',
-    '~/plugins/events.js',
+    '~/plugins/boutique/plugins/utils.js',
+    '~/plugins/boutique/plugins/api-es.js',
+    '~/plugins/boutique/plugins/api-bitbag.js',
+    '~/plugins/boutique/plugins/events.js',
     '~/plugins/boutique/plugin.js',
   ],
   buildModules: [

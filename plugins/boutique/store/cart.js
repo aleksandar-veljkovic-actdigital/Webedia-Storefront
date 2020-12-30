@@ -1,4 +1,4 @@
-import {ls} from '~/plugins/ls'
+import {ls} from '@core/plugins/ls'
 
 const defaultState = {
   id: false,
