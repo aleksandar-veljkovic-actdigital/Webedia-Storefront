@@ -11,10 +11,10 @@
 
 <script>
 
-import {component} from '~/store/cart.js'
 export default {
 
 };
+
 </script>
 
 <style scoped lang="scss">

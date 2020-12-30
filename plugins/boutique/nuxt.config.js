@@ -113,7 +113,6 @@ export default {
 
   router: {
     async extendRoutes(routes, resolve) {
-      // console.log('xxxxxxxxx config extendRoutes')
     }
   }
 

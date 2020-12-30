@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import {component} from '~/store/cart.js'
+
 export default {
   computed: {
     cart () {

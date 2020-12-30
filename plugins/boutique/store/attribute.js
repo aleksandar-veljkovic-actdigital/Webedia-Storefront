@@ -6,14 +6,16 @@ export default {
   }),
 
   mutations: {
+
     SET_ALL (state, allAttributes) {
       state.all = allAttributes;
     },
+    
   },
 
   actions: {
+
     async fetchAll ({commit}) {
-      console.log('xxxxxxx fetchAll Botique', this.state.attribute)
       let esQuery = {
         "query": {
           "bool": {
@@ -39,6 +41,7 @@ export default {
       })
       return  esData;
     },
+
   },
 
 }
