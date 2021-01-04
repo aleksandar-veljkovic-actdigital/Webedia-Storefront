@@ -1,6 +1,6 @@
 <script>
 
-import Test from '~/plugins/boutique/pages/test.vue'
+import Test from '@core/pages/test.vue'
 
 export default {
   mixins: [Test],

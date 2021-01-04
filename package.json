@@ -14,6 +14,7 @@
     "@nuxtjs/axios": "^5.12.2",
     "@nuxtjs/proxy": "^2.0.1",
     "@nuxtjs/style-resources": "^1.0.0",
+    "boutique": "ssh://git@github.com/diwaneemedia/boutique.git#master",
     "node-sass": "^5.0.0",
     "nuxt": "^2.14.7",
     "nuxt-i18n": "^6.15.4",

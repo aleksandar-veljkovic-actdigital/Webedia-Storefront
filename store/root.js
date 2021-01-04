@@ -1,4 +1,4 @@
-import boutiqueRootStore from '~/plugins/boutique/store/root.js'
+import boutiqueRootStore from '@core/store/root.js'
 
 export default {
 

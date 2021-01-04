@@ -1,4 +1,4 @@
-import boutiqueStoreAttributes from '~/plugins/boutique/store/attribute.js'
+import boutiqueStoreAttributes from '@core/store/attribute.js'
 
 export default {
 

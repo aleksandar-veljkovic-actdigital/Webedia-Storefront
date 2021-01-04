@@ -1,4 +1,4 @@
-import coreConfig from './plugins/boutique/nuxt.config.js'
+import coreConfig from 'boutique/nuxt.config.js'
 
 export default {
   ...coreConfig,
