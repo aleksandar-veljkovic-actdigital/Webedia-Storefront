@@ -6,8 +6,13 @@
       "@/*": ["./*"],
       "~~/*": ["./*"],
       "@@/*": ["./*"],
-      "@theme/*": ["./plugins/boutique/components/*"],
+      "@components/*": [
+        "./components/*",
+        "node_modules/boutique/components/*"
+      ],
+      "@core/*": ["node_modules/boutique/*"],
     }
   },
-  "exclude": ["node_modules", ".nuxt", "dist"]
+  "exclude": [".nuxt", "dist"],
+  "include": ["./node_modules/boutique"]
 }
