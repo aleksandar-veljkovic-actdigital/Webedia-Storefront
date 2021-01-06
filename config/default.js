@@ -18,7 +18,11 @@ export const config = {
         "value": "1*nA=Z}InNtT:LG-"
       }
     }
-  }
+  },
+  "scss": {
+    $breakpoint: '768px',
+    $max_width: '1200px',
+  },
 }
 
 export const secrets = {
