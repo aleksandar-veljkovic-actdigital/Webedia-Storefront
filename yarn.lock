@@ -2007,7 +2007,7 @@ boolbase@^1.0.0, boolbase@~1.0.0:
 
 "boutique@ssh://git@github.com/diwaneemedia/boutique.git#master":
   version "0.0.0"
-  resolved "ssh://git@github.com/diwaneemedia/boutique.git#6d359ededaa0c2386589d9660ae524d1bf83ac94"
+  resolved "ssh://git@github.com/diwaneemedia/boutique.git#d44caf3c800baee4832c5a69ffa2b526b49ffd33"
   dependencies:
     glob "^7.1.6"
 
